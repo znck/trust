@@ -1,0 +1,25 @@
+{
+    "name": "znck/trust",
+    "type": "library",
+    "description": "User roles and permissions for Laravel 5",
+    "homepage": "https://github.com/znck/trust",
+    "require": {
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rahul Kadyan",
+            "email": "hi@znck.me"
+        }
+    ],
+    "require-all": true,
+    "autoload": {
+        "psr-0": {
+            "Znck\\Trust": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "illuminate/support": "~5.1@dev"
+    }
+}
