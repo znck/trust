@@ -5,7 +5,7 @@
  * Author: Rahul Kadyan, <hi@znck.me>
  */
 
-namespace Znck\Commands;
+namespace Znck\Trust\Commands;
 
 
 use Illuminate\Console\Command;
@@ -66,7 +66,7 @@ class MigrationCommand extends Command
 
     private function create()
     {
-        $src = __DIR__ . '/../migrations/create.php';
+        $src = __DIR__ . '/../migrations/create.php.stub';
         $databasePath = $this->laravel->basePath() . "/database/migrations/";
         if ($this->laravel->bound('path.database')) {
             $databasePath = $this->laravel->make('path.database') . '/migrations/';

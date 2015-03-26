@@ -9,10 +9,32 @@ namespace Znck\Trust;
 
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Znck\Commands\MigrationCommand;
+use Znck\Trust\Commands\MigrationCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    /**
+     * Boot the service provider.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->setupConfig();
+    }
+
+    /**
+     * Setup the config.
+     *
+     * @return void
+     */
+    protected function setupConfig()
+    {
+        $source = realpath(__DIR__ . '/config/trust.php');
+        $this->publishes([$source => config_path('trust.php')]);
+        $this->mergeConfigFrom($source, 'znck.trust');
+    }
+
     /**
      * Register the service provider.
      *
@@ -27,5 +49,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->singleton('command.trust.migrate', function () {
             return new MigrationCommand;
         });
+
+        $this->commands('command.trust.migrate');
     }
 }
