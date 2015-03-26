@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "66b717605d5e0d4e9198a91fb3573869",
+    "hash": "64fcca5345ef3e9942d6e5f5e9f223e9",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -178,12 +178,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "66c7ad3c216bde8d4a130ff5fee9e7fa6a855b21"
+                "reference": "8e953bd0d3860665c38690bd6f36ee7c58e1fec1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/66c7ad3c216bde8d4a130ff5fee9e7fa6a855b21",
-                "reference": "66c7ad3c216bde8d4a130ff5fee9e7fa6a855b21",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/8e953bd0d3860665c38690bd6f36ee7c58e1fec1",
+                "reference": "8e953bd0d3860665c38690bd6f36ee7c58e1fec1",
                 "shasum": ""
             },
             "require": {
@@ -212,7 +212,7 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "http://laravel.com",
-            "time": "2015-03-11 01:28:14"
+            "time": "2015-03-25 15:15:20"
         },
         {
             "name": "illuminate/database",
@@ -492,12 +492,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "2f2c1e17731ae6c72cac19669a1fcc7d9d4dcb66"
+                "reference": "0041b7eb218eda42219179a77c594148d00da793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/2f2c1e17731ae6c72cac19669a1fcc7d9d4dcb66",
-                "reference": "2f2c1e17731ae6c72cac19669a1fcc7d9d4dcb66",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/0041b7eb218eda42219179a77c594148d00da793",
+                "reference": "0041b7eb218eda42219179a77c594148d00da793",
                 "shasum": ""
             },
             "require": {
@@ -535,7 +535,7 @@
             ],
             "description": "The Illuminate Console package.",
             "homepage": "http://laravel.com",
-            "time": "2015-03-23 18:13:38"
+            "time": "2015-03-25 15:15:20"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1504,9 +1504,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "illuminate/database": 20,
-        "illuminate/support": 20,
-        "illuminate/console": 20,
         "phpunit/phpunit": 20
     },
     "prefer-stable": false,
