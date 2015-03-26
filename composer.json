@@ -23,7 +23,7 @@
   "require-all": true,
   "autoload": {
     "psr-0": {
-      "Znck": "src/"
+      "Znck\\Trust": "src/"
     }
   },
   "minimum-stability": "dev",
