@@ -28,7 +28,7 @@ class TrustTest extends AbstractPackageTestCase
         parent::setUp();
     }
 
-    protected function getUser($attributes = [])
+    protected function getUser()
     {
         return Mockery::mock('\User');
     }

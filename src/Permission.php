@@ -9,7 +9,7 @@ use Illuminate\Database\Query\Builder;
  * Eloquent ORM for permissions table
  *
  * @package Sereno\Models\User
- * @property-read \Illuminate\Database\Eloquent\Collection|\Sereno\Models\User\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|Role[] $roles
  * @property integer $id
  * @property string $name
  * @method static Builder|Permission whereId($value)
@@ -52,6 +52,6 @@ class Permission extends Model
      */
     public function roles()
     {
-        return $this->belongsToMany('Models\User\Role');
+        return $this->belongsToMany('Znck\Trust\Role');
     }
 }

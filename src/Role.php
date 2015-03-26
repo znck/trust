@@ -7,8 +7,8 @@ use Illuminate\Database\Query\Builder;
  * Class Role
  *
  * @package Sereno\Models\User
- * @property-read \Illuminate\Database\Eloquent\Collection|\Sereno\Models\User\Permission[] $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection|\Sereno\User[]                   $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|Permission[]                     $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection[]                                $users
  * @property integer                                                                        $id
  * @property string                                                                         $name
  * @method static Builder|Role whereId($value)
@@ -51,7 +51,7 @@ class Role extends Model
      */
     public function permissions()
     {
-        return $this->belongsToMany('Models\User\Permission');
+        return $this->belongsToMany('Znck\Trust\Permission');
     }
 
     /**
