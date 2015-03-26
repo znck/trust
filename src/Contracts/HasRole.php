@@ -4,7 +4,7 @@
  *
  * Author: Rahul Kadyan, <hi@znck.me>
  */
-namespace Znck\Trust\Contracts\Trust;
+namespace Znck\Trust\Contracts;
 
 
 /**
