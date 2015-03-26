@@ -4,7 +4,14 @@
   "description": "User roles and permissions for Laravel 5",
   "homepage": "https://github.com/znck/trust",
   "require": {
-    "illuminate/database": "5.*"
+    "php": ">=5.4.7",
+    "illuminate/database": "~5.0.0",
+    "illuminate/contracts": "5.0.*",
+    "illuminate/support": "5.0.*",
+    "illuminate/console": "~5.0.0"
+  },
+  "require-dev": {
+    "graham-campbell/testbench": "~2.0"
   },
   "license": "MIT",
   "authors": [
@@ -20,9 +27,5 @@
     }
   },
   "minimum-stability": "dev",
-  "require-dev": {
-    "illuminate/support": "5.*",
-    "illuminate/console": "5.*",
-    "phpunit/phpunit": "~4.7@dev"
-  }
+  "prefer-stable": true
 }

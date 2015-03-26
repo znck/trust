@@ -1,15 +1,35 @@
 <?php
+use GrahamCampbell\TestBench\AbstractPackageTestCase;
+
+require '../vendor/autoload.php';
+require 'User.php';
 
 /**
  * This file belongs to Trust.
  *
  * Author: Rahul Kadyan, <hi@znck.me>
  */
-class TrustTest extends PHPUnit_Framework_TestCase
+class TrustTest extends AbstractPackageTestCase
 {
-    use \Znck\Trust\RoleTrait;
+    public function testUserHasRole()
+    {
+        $user = $this->getUser();
 
-    public function test_has_role() {
+        $this->assertNotNull($user->roles, 'User should have roles attribute.');
+    }
 
+    protected function getServiceProviderClass($app)
+    {
+        return 'Znck\Trust\ServiceProvider';
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
+    }
+
+    protected function getUser($attributes = [])
+    {
+        return Mockery::mock('\User');
     }
 }
