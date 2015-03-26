@@ -2,7 +2,7 @@
 
 use Closure;
 
-class NeedsOrPermission extends AbstractRoleOrPermission
+class NeedsPermission extends AbstractRoleOrPermission
 {
 
 
