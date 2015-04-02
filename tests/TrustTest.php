@@ -2,7 +2,6 @@
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 
 require '../vendor/autoload.php';
-require 'User.php';
 
 /**
  * This file belongs to Trust.
@@ -11,13 +10,6 @@ require 'User.php';
  */
 class TrustTest extends AbstractPackageTestCase
 {
-    public function testUserHasRole()
-    {
-        $user = $this->getUser();
-
-        $this->assertNotNull($user->roles, 'User should have roles attribute.');
-    }
-
     protected function getServiceProviderClass($app)
     {
         return 'Znck\Trust\ServiceProvider';
@@ -30,6 +22,11 @@ class TrustTest extends AbstractPackageTestCase
 
     protected function getUser()
     {
-        return Mockery::mock('\User');
+        return Mockery::mock('Znck\Trust\RoleTrait');
+    }
+
+    protected function  getMiddleware()
+    {
+        return Mockery::mock('Znck\Trust\Http\Middleware\AbstractRoleOrPermission');
     }
 }

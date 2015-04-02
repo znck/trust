@@ -8,7 +8,7 @@ class NeedsRole extends AbstractRoleOrPermission
     /**
      * Handle an incoming request.
      *
-     * @param  $request
+     * @param           $request
      * @param  \Closure $next
      *
      * @return mixed
@@ -16,6 +16,10 @@ class NeedsRole extends AbstractRoleOrPermission
     public function handle($request, Closure $next)
     {
         $this->request = $request;
+
+        if (!$this->user) {
+            return redirect()->guest(\Config::get('app.login', url('/auth/login')));
+        }
 
         if ($this->hasRole()) {
             return $next($request);

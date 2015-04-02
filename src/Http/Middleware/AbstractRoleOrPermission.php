@@ -35,10 +35,6 @@ abstract class AbstractRoleOrPermission
         $this->route = $route;
 
         $this->user = $auth->user();
-
-        if ($this->user == null) {
-            abort(401);
-        }
     }
 
     /**
@@ -48,7 +44,7 @@ abstract class AbstractRoleOrPermission
      */
     protected function getAction($key)
     {
-        $action = array_get($this->route->getAction(), $key, null);
+        $action = array_get($this->route->getAction(), $key, session('znck.trust.' . $key, null));
         if (null === $action) {
             /**
              * Defining middleware `role` and `permission` in constructor is not supported.
