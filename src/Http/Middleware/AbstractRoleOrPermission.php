@@ -49,7 +49,7 @@ abstract class AbstractRoleOrPermission
     /**
      * @param $key
      *
-     * @return bool
+     * @return string
      */
     protected function getAction($key)
     {
@@ -81,9 +81,9 @@ abstract class AbstractRoleOrPermission
      */
     protected function hasPermission()
     {
-        $do = $this->getAction('permission');
+        $permissionsNeeded = $this->getAction('permission');
 
-        return $this->user->ability([], $do, ['validate_all' => true]);
+        return $this->user->ability([], $permissionsNeeded, ['validate_all' => true]);
     }
 
     /**

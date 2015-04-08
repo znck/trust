@@ -75,35 +75,15 @@ trait RoleTrait
         $options = $this->validateAbilityOptions($options);
 
         // Loop through roles and permissions and check each.
-        $checkedRoles = [];
-        $checkedPermissions = [];
-        foreach ($roles as $role) {
-            $checkedRoles[$role] = $this->hasRole($role);
-        }
-        foreach ($permissions as $permission) {
-            $checkedPermissions[$permission] = $this->can($permission);
-        }
+        list($checkedRoles, $checkedPermissions) = $this->testRolesAndPermissions($roles, $permissions);
 
         // If validate all and there is a false in either
         // Check that if validate all, then there should not be any false.
         // Check that if not validate all, there must be at least one true.
-        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
-            (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))
-        ) {
-            $validateAll = true;
-        } else {
-            $validateAll = false;
-        }
+        $validateAll = $this->validateResults($options, $checkedRoles, $checkedPermissions);
 
         // Return based on option
-        if ($options['return_type'] == 'boolean') {
-            return $validateAll;
-        } elseif ($options['return_type'] == 'array') {
-            return ['roles' => $checkedRoles, 'permissions' => $checkedPermissions];
-        } else {
-            return [$validateAll, ['roles' => $checkedRoles, 'permissions' => $checkedPermissions]];
-        }
-
+        return $this->formatResults($options, $validateAll, $checkedRoles, $checkedPermissions);
     }
 
     /**
@@ -223,6 +203,67 @@ trait RoleTrait
             }
 
             return $options;
+        }
+    }
+
+    /**
+     * @param $roles
+     * @param $permissions
+     *
+     * @return array
+     */
+    protected function testRolesAndPermissions($roles, $permissions)
+    {
+        $checkedRoles = [];
+        $checkedPermissions = [];
+        foreach ($roles as $role) {
+            $checkedRoles[$role] = $this->hasRole($role);
+        }
+        foreach ($permissions as $permission) {
+            $checkedPermissions[$permission] = $this->can($permission);
+        }
+
+        return [$checkedRoles, $checkedPermissions];
+    }
+
+    /**
+     * @param $options
+     * @param $checkedRoles
+     * @param $checkedPermissions
+     *
+     * @return bool
+     */
+    protected function validateResults($options, $checkedRoles, $checkedPermissions)
+    {
+        if (($options['validate_all'] && !(in_array(false, $checkedRoles) || in_array(false, $checkedPermissions))) ||
+            (!$options['validate_all'] && (in_array(true, $checkedRoles) || in_array(true, $checkedPermissions)))
+        ) {
+            $validateAll = true;
+
+            return $validateAll;
+        } else {
+            $validateAll = false;
+
+            return $validateAll;
+        }
+    }
+
+    /**
+     * @param $options
+     * @param $validateAll
+     * @param $checkedRoles
+     * @param $checkedPermissions
+     *
+     * @return array
+     */
+    protected function formatResults($options, $validateAll, $checkedRoles, $checkedPermissions)
+    {
+        if ($options['return_type'] == 'boolean') {
+            return $validateAll;
+        } elseif ($options['return_type'] == 'array') {
+            return ['roles' => $checkedRoles, 'permissions' => $checkedPermissions];
+        } else {
+            return [$validateAll, ['roles' => $checkedRoles, 'permissions' => $checkedPermissions]];
         }
     }
 }
