@@ -18,32 +18,29 @@ use Illuminate\Database\Query\Builder;
 class Permission extends Model
 {
     /**
+     * Whether timestamps are needed or not
+     *
+     * @type bool
+     */
+    public $timestamps = false;
+    /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'permissions';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['name'];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = ['id'];
-
-    /**
-     * Whether timestamps are needed or not
-     *
-     * @type bool
-     */
-    public $timestamps = false;
 
     /**
      * Roles which contain this permission

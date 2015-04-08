@@ -5,13 +5,15 @@
   "homepage": "https://github.com/znck/trust",
   "require": {
     "php": ">=5.4.7",
-    "illuminate/database": "~5.0.0",
-    "illuminate/contracts": "5.0.*",
-    "illuminate/support": "5.0.*",
-    "illuminate/console": "~5.0.0"
+    "illuminate/database": ">5.0",
+    "illuminate/contracts": ">5.0",
+    "illuminate/support": ">5.0",
+    "illuminate/console": ">5.0"
   },
   "require-dev": {
-    "graham-campbell/testbench": "~2.0"
+    "orchestra/testbench": "3.1.*",
+    "mockery/mockery": "dev-master",
+    "phpunit/phpunit": "~4.8"
   },
   "license": "MIT",
   "authors": [
@@ -26,6 +28,6 @@
       "Znck\\Trust\\": "src/"
     }
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "prefer-stable": true
 }

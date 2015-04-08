@@ -17,32 +17,29 @@ use Illuminate\Database\Query\Builder;
 class Role extends Model
 {
     /**
+     * Whether timestamps are needed or not
+     *
+     * @type bool
+     */
+    public $timestamps = false;
+    /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'roles';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = ['name'];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = ['id'];
-
-    /**
-     * Whether timestamps are needed or not
-     *
-     * @type bool
-     */
-    public $timestamps = false;
 
     /**
      * Permission owned by the role
@@ -61,6 +58,6 @@ class Role extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('trust::users_model', 'User'));
+        return $this->belongsToMany(config('trust::users_model', 'User'));
     }
 }

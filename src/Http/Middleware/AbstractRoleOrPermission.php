@@ -3,6 +3,7 @@
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Session\Store;
 
 /**
  * Class AbstractRoleOrPermission
@@ -27,14 +28,22 @@ abstract class AbstractRoleOrPermission
     protected $user;
 
     /**
+     * @type \Illuminate\Session\Store
+     */
+    private $session;
+
+    /**
      * @param \Illuminate\Routing\Route $route
      * @param \Illuminate\Auth\Guard    $auth
+     * @param \Illuminate\Session\Store $session
+     * @param \Illuminate\Http\Request  $request
      */
-    function __construct(Route $route, Guard $auth)
+    function __construct(Route $route, Guard $auth, Store $session, Request $request)
     {
         $this->route = $route;
-
         $this->user = $auth->user();
+        $this->session = $session;
+        $this->request = $request;
     }
 
     /**
@@ -44,7 +53,7 @@ abstract class AbstractRoleOrPermission
      */
     protected function getAction($key)
     {
-        $action = array_get($this->route->getAction(), $key, session('znck.trust.' . $key, null));
+        $action = array_get($this->route->getAction(), $key, $this->getActionFallback($key));
         if (null === $action) {
             /**
              * Defining middleware `role` and `permission` in constructor is not supported.
@@ -99,6 +108,16 @@ abstract class AbstractRoleOrPermission
         abort(401, 'Your are not authorized to access this resource.');
 
         return null;
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     */
+    protected function getActionFallback($key)
+    {
+        return $this->session->get('znck.trust.' . $key, null);
     }
 
 }

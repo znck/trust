@@ -18,7 +18,7 @@ class NeedsRole extends AbstractRoleOrPermission
         $this->request = $request;
 
         if (!$this->user) {
-            return redirect()->guest(\Config::get('app.login', url('/auth/login')));
+            return redirect()->guest(config('app.login', url('/auth/login')));
         }
 
         if ($this->hasRole()) {

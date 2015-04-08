@@ -1,14 +1,13 @@
-<?php
+<?php namespace Znck\Trust;
+
 /**
  * This file belongs to Trust.
  *
  * Author: Rahul Kadyan, <hi@znck.me>
  */
 
-namespace Znck\Trust;
-
-
-trait RoleTrait {
+trait RoleTrait
+{
     /**
      * Many-to-Many relations with Role
      *
@@ -16,7 +15,7 @@ trait RoleTrait {
      */
     public function roles()
     {
-        return $this->belongsToMany('\Znck\Trust\Role')->withPivot('expires');
+        return $this->belongsToMany('\Znck\Trust\Role', 'role_user', 'user_id', 'role_id')->withPivot('expires');
     }
 
     /**
@@ -70,32 +69,10 @@ trait RoleTrait {
     public function ability($roles, $permissions, $options = [])
     {
         // Convert string to array if that's what is passed in.
-        if (!is_array($roles)) {
-            $roles = explode(',', $roles);
-        }
-        if (!is_array($permissions)) {
-            $permissions = explode(',', $permissions);
-        }
+        list($roles, $permissions) = $this->formatRolesAndPermissions($roles, $permissions);
 
         // Set up default values and validate options.
-        if (!isset($options['validate_all'])) {
-            $options['validate_all'] = false;
-        } else {
-            if ($options['validate_all'] != true && $options['validate_all'] != false) {
-                throw new \InvalidArgumentException();
-            }
-        }
-
-        if (!isset($options['return_type'])) {
-            $options['return_type'] = 'boolean';
-        } else {
-            if ($options['return_type'] != 'boolean' &&
-                $options['return_type'] != 'array' &&
-                $options['return_type'] != 'both'
-            ) {
-                throw new \InvalidArgumentException();
-            }
-        }
+        $options = $this->validateAbilityOptions($options);
 
         // Loop through roles and permissions and check each.
         $checkedRoles = [];
@@ -195,6 +172,57 @@ trait RoleTrait {
     {
         foreach ($roles as $role) {
             $this->detachRole($role);
+        }
+    }
+
+    /**
+     * @param $roles
+     * @param $permissions
+     *
+     * @return array
+     */
+    protected function formatRolesAndPermissions($roles, $permissions)
+    {
+        if (!is_array($roles)) {
+            $roles = explode(',', $roles);
+        }
+        if (!is_array($permissions)) {
+            $permissions = explode(',', $permissions);
+
+            return [$roles, $permissions];
+        }
+
+        return [$roles, $permissions];
+    }
+
+    /**
+     * @param $options
+     *
+     * @return mixed
+     */
+    protected function validateAbilityOptions($options)
+    {
+        if (!isset($options['validate_all'])) {
+            $options['validate_all'] = false;
+        } else {
+            if ($options['validate_all'] != true && $options['validate_all'] != false) {
+                throw new \InvalidArgumentException();
+            }
+        }
+
+        if (!isset($options['return_type'])) {
+            $options['return_type'] = 'boolean';
+
+            return $options;
+        } else {
+            if ($options['return_type'] != 'boolean' &&
+                $options['return_type'] != 'array' &&
+                $options['return_type'] != 'both'
+            ) {
+                throw new \InvalidArgumentException();
+            }
+
+            return $options;
         }
     }
 }
