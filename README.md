@@ -17,7 +17,7 @@ After updating, add the ServiceProvider to the array of providers in `config/app
 
 Publish migration tables.
 ```bash
-$ php artisan trust:migration 
+$ php artisan trust:tables 
 ```
 
 Usage

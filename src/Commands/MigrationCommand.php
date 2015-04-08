@@ -17,7 +17,7 @@ class MigrationCommand extends Command
      *
      * @type string
      */
-    protected $name = 'trust:migration';
+    protected $name = 'trust:tables';
 
     /**
      * The console command description.
