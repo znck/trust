@@ -1,4 +1,4 @@
-# Trust [![Build Status](https://travis-ci.org/znck/trust.svg?branch=master)](https://travis-ci.org/znck/trust) [![Release Status](https://img.shields.io/github/release/znck/trust.svg)](https://github.com/znck/trust/releases) [![Packagist Version](https://img.shields.io/packagist/v/znck/trust.svg)](https://packagist.org/packages/znck/trust) [![Packagist Downloads](https://img.shields.io/packagist/dt/znck/trust.svg)](https://packagist.org/packages/znck/trust)  [![License](https://img.shields.io/packagist/l/znck/trust.svg)](http://znck.mit-license.org)
+# Trust [![Build Status](https://travis-ci.org/znck/trust.svg?branch=master)](https://travis-ci.org/znck/trust)  [![Packagist Version](https://img.shields.io/packagist/v/znck/trust.svg)](https://packagist.org/packages/znck/trust) [![Packagist Downloads](https://img.shields.io/packagist/dt/znck/trust.svg)](https://packagist.org/packages/znck/trust)  [![License](https://img.shields.io/packagist/l/znck/trust.svg)](http://znck.mit-license.org)
 User roles and permissions for Laravel 5
 
 > Note: This package still needs tests!
