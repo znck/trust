@@ -1,7 +1,7 @@
-# Trust [![Build Status](https://travis-ci.org/znck/trust.svg?branch=master)](https://travis-ci.org/znck/trust) [![Release Status](https://img.shields.io/github/release/znck/trust.svg)](https://github.com/znck/trust/releases) [![Packagist Version](https://img.shields.io/packagist/v/znck/trust.svg)](https://packagist.org/packages/znck/trust) [![Packagist Downloads](https://img.shields.io/packagist/dt/znck/trust.svg)](https://packagist.org/packages/znck/trust)  [![License](https://img.shields.io/packagist/l/znck/trust.svg)](http://znck.mit-license.org) [![Codacy Badge](https://www.codacy.com/project/badge/9264639675f04aed934032372d433c7a)](https://www.codacy.com/app/hi_3/trust)
+# Trust [![Build Status](https://travis-ci.org/znck/trust.svg?branch=master)](https://travis-ci.org/znck/trust) [![Release Status](https://img.shields.io/github/release/znck/trust.svg)](https://github.com/znck/trust/releases) [![Packagist Version](https://img.shields.io/packagist/v/znck/trust.svg)](https://packagist.org/packages/znck/trust) [![Packagist Downloads](https://img.shields.io/packagist/dt/znck/trust.svg)](https://packagist.org/packages/znck/trust)  [![License](https://img.shields.io/packagist/l/znck/trust.svg)](http://znck.mit-license.org)
 User roles and permissions for Laravel 5
 
-> Note: This package is still needs tests!
+> Note: This package still needs tests!
 
 This package provides an easy way to use role-permissions based User model.
 
