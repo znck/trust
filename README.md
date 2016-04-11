@@ -122,39 +122,39 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         ];
         ```
     - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
-1. Custom models:
+1. Custom models:  
     Similar to `User` model, `Role` and `Permission` model can have custom implementation.   
-    `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the user model file should look like this.
+    - `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the user model file should look like this.
     
-    ``` php
-    <?php namespace \App;
-    
-    ...
-    use Znck\Trust\Contracts\Role as RoleInterface;
-    use Znck\Trust\Traits\Role as RoleTrait;
-    ...
-    
-    class Role extends Model implements RoleInterface {
-        use RoleTrait;
+        ``` php
+        <?php namespace \App;
+        
         ...
-    }
-    ```
-    
-    `Permission` model should implement `Znck\Trust\Contracts\Permission` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permission`. Your `app/Permission.php` or the user model file should look like this.
-    
-    ``` php
-    <?php namespace \App;
-    
-    ...
-    use Znck\Trust\Contracts\Permission as PermissionInterface;
-    use Znck\Trust\Traits\Permission as PermissionTrait;
-    ...
-    
-    class Permission extends Model implements PermissionInterface {
-        use PermissionTrait;
+        use Znck\Trust\Contracts\Role as RoleInterface;
+        use Znck\Trust\Traits\Role as RoleTrait;
         ...
-    }
-    ```
+        
+        class Role extends Model implements RoleInterface {
+            use RoleTrait;
+            ...
+        }
+        ```
+    
+    - `Permission` model should implement `Znck\Trust\Contracts\Permission` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permission`. Your `app/Permission.php` or the user model file should look like this.
+    
+        ``` php
+        <?php namespace \App;
+        
+        ...
+        use Znck\Trust\Contracts\Permission as PermissionInterface;
+        use Znck\Trust\Traits\Permission as PermissionTrait;
+        ...
+        
+        class Permission extends Model implements PermissionInterface {
+            use PermissionTrait;
+            ...
+        }
+        ```
     
 ## Change log
 
