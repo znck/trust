@@ -65,9 +65,13 @@ Once `trust` is installed, you have to register its service provider. Open `conf
 ];
 ```
 
-Now, You should publish the migrations. Just use `php artisan vendor:publish --provider=Znck\\Trust\\TrustServiceProvider --tag=migrations` and this would crate some migrations in `database/migrations` directory.
+Now, You should publish the migrations. Just use  
+`php artisan vendor:publish --provider=Znck\\Trust\\TrustServiceProvider --tag=migrations`  
+and this would crate some migrations in `database/migrations` directory.
 
-You can also customize `trust` using configuration file. Just use `php artisan vendor:publish --provider=Znck\\Trust\\TrustServiceProvider --tag=config` and this would create `config/trust.php` file. See [usage guide](#usage) for details.
+You can also customize `trust` using configuration file. Just use   
+`php artisan vendor:publish --provider=Znck\\Trust\\TrustServiceProvider --tag=config`  
+and this would create `config/trust.php` file. See [usage guide](#usage) for details.
 
 ## Usage
 1. Switch on `Trust`:  
