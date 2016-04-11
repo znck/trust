@@ -75,7 +75,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
 
 ## Usage
 1. Switch on `Trust`:  
-    User model should implement `Znck\Trust\Contracts\Permissible` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permissible`. Your `app/User.php` or the user model file should look like this.
+    `User` model should implement `Znck\Trust\Contracts\Permissible` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permissible`. Your `app/User.php` or the user model file should look like this.
     ``` php
     <?php namespace \App;
     
@@ -109,20 +109,52 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
        - an array of role names; eg: `['user', 'admin']`  
        - an array of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
        - a collection of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
-1. Custom models and configuration:    
-  - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.  
-
-    ``` php 
-    <?php return [
-        'models' => [
-            'user' => App\User::class,
-            'role' => App\Role::class,
-            'permission' => App\Permission::class,
-        ]
-    ];
+1. Configuration:    
+    - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.
+        ``` php 
+        <?php return [
+            'models' => [
+                'user' => App\User::class,
+                'role' => App\Role::class,
+                'permission' => App\Permission::class,
+            ]
+        ];
+        ```
+    - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
+1. Custom models:
+    Similar to `User` model, `Role` and `Permission` model can have custom implementation.   
+    `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the user model file should look like this.
+    
+    ``` php
+    <?php namespace \App;
+    
+    ...
+    use Znck\Trust\Contracts\Role as RoleInterface;
+    use Znck\Trust\Traits\Role as RoleTrait;
+    ...
+    
+    class Role extends Model implements RoleInterface {
+        use RoleTrait;
+        ...
+    }
     ```
-  - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
-
+    
+    `Permission` model should implement `Znck\Trust\Contracts\Permission` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permission`. Your `app/Permission.php` or the user model file should look like this.
+    
+    ``` php
+    <?php namespace \App;
+    
+    ...
+    use Znck\Trust\Contracts\Permission as PermissionInterface;
+    use Znck\Trust\Traits\Permission as PermissionTrait;
+    ...
+    
+    class Permission extends Model implements PermissionInterface {
+        use PermissionTrait;
+        ...
+    }
+    ```
+    
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
