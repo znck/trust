@@ -25,7 +25,7 @@ class TestCase extends AbstractPackageTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->app['config']['auth.model'] = User::class;
+        $this->app['config']['auth.providers.users.model'] = User::class;
     }
 
     protected function getServiceProviderClass($app)
