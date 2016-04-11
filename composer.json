@@ -4,16 +4,17 @@
   "description": "User roles and permissions for Laravel 5",
   "homepage": "https://github.com/znck/trust",
   "require": {
-    "php": ">=5.4.7",
-    "illuminate/database": ">5.0",
-    "illuminate/contracts": ">5.0",
-    "illuminate/support": ">5.0",
-    "illuminate/console": ">5.0"
+    "php": ">=7.0",
+    "illuminate/database": "^5.2",
+    "illuminate/contracts": "^5.2",
+    "illuminate/support": "^5.2"
   },
   "require-dev": {
-    "orchestra/testbench": "3.1.*",
-    "mockery/mockery": "dev-master",
-    "phpunit/phpunit": "~4.8"
+    "phpunit/phpunit": "~5.0",
+    "graham-campbell/testbench": "^3.1",
+    "fabpot/php-cs-fixer": "^1.11",
+    "phpunit/php-code-coverage": "^3.3",
+    "satooshi/php-coveralls": "^1.0"
   },
   "license": "MIT",
   "authors": [
@@ -22,12 +23,20 @@
       "email": "hi@znck.me"
     }
   ],
-  "require-all": true,
   "autoload": {
     "psr-4": {
       "Znck\\Trust\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Znck\\Tests\\Trust\\": "tests/"
+    }
+  },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "scripts": {
+    "test": "phpunit",
+    "cs": "php-cs-fixer fix"
+  }
 }
