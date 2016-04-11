@@ -40,5 +40,4 @@ class TestCase extends AbstractPackageTestCase
     {
         return User::create(['name' => 'Foo Bar', 'email' => 'foo@example.com', 'password' => bcrypt('password')]);
     }
-
 }

@@ -9,7 +9,8 @@ use Znck\Trust\TrustServiceProvider;
 
 class PermissibleTest extends TestCase
 {
-    public function test_it_can_check_permission() {
+    public function test_it_can_check_permission()
+    {
         $user = $this->createUser();
         $this->assertFalse($user->checkPermission('post.create'));
 
@@ -33,7 +34,8 @@ class PermissibleTest extends TestCase
         $user->checkPermission(null);
     }
 
-    public function test_it_can_check_permission_with_list() {
+    public function test_it_can_check_permission_with_list()
+    {
         $user = $this->createUser();
         $this->assertFalse($user->checkPermission('post.create|post.update'));
         $this->assertFalse($user->checkPermission('post.create,post.update'));
@@ -51,7 +53,8 @@ class PermissibleTest extends TestCase
         $this->assertTrue($user->checkPermission(Permission::all()));
     }
 
-    public function test_it_can_check_role() {
+    public function test_it_can_check_role()
+    {
         $user = $this->createUser();
         $this->assertFalse($user->checkRole('admin'));
 
@@ -77,7 +80,8 @@ class PermissibleTest extends TestCase
         $user->checkRole(null);
     }
 
-    public function test_it_can_check_role_with_list() {
+    public function test_it_can_check_role_with_list()
+    {
         $user = $this->createUser();
         $this->assertFalse($user->checkRole('admin|author'));
         $this->assertFalse($user->checkRole('admin,author'));
@@ -108,7 +112,8 @@ class PermissibleTest extends TestCase
         $this->assertTrue($user->checkPermission(Permission::all()));
     }
 
-    public function test_it_cannot_load_permissions_for_invalid_config() {
+    public function test_it_cannot_load_permissions_for_invalid_config()
+    {
         $user = $this->createUser();
         config(['znck.trust.models.permission' => static::class]);
         $this->expectException(\InvalidArgumentException::class);

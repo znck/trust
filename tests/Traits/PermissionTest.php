@@ -7,7 +7,6 @@ use Znck\Trust\Models\Permission;
 
 class PermissionTest extends TestCase
 {
-
     public function test_it_has_relations()
     {
         $permission = Permission::create(['name' => 'Bar', 'slug' => 'bar']);

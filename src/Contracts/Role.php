@@ -2,6 +2,7 @@
 
 /**
  * Interface Role
+ *
  * @property string name
  * @property string slug
  * @property string description

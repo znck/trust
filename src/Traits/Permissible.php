@@ -103,7 +103,7 @@ trait Permissible
 
     protected function canAny(array $permissions)
     {
-        return !$this->filterCollection($permissions, $this->permissions)->isEmpty();
+        return ! $this->filterCollection($permissions, $this->permissions)->isEmpty();
     }
 
     protected function canAll(array $permissions)
@@ -154,7 +154,8 @@ trait Permissible
         throw new InvalidArgumentException('Invalid permission format.');
     }
     
-    public function checkRole($roles) {
+    public function checkRole($roles)
+    {
         $roles = $this->parseRoles($roles);
         if (hash_equals('any', $roles['query'])) {
             return $this->hasAny($roles['items']);
@@ -162,15 +163,18 @@ trait Permissible
         return $this->hasAll($roles['items']);
     }
 
-    protected function hasAny(array $roles) {
-        return !$this->filterCollection($roles, $this->roles)->isEmpty();
+    protected function hasAny(array $roles)
+    {
+        return ! $this->filterCollection($roles, $this->roles)->isEmpty();
     }
 
-    protected function hasAll(array $roles) {
+    protected function hasAll(array $roles)
+    {
         return count($roles) === $this->filterCollection($roles, $this->roles)->count();
     }
     
-    public function parseRoles($roles) {
+    public function parseRoles($roles)
+    {
         if (is_string($roles)) {
             return $this->parseRolePermissionQuery($roles);
         }
@@ -233,6 +237,7 @@ trait Permissible
     /**
      * @param array $choose
      * @param Collection $source
+     *
      * @return Collection
      */
     protected function filterCollection(array $choose, Collection $source)
