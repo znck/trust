@@ -111,6 +111,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
        - a collection of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
 1. Configuration:    
     - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.
+    
         ``` php 
         <?php return [
             'models' => [
