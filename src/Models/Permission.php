@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Models;
+<?php
+
+namespace Znck\Trust\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Znck\Trust\Contracts\Permission as PermissionContract;

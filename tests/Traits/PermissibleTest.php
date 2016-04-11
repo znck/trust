@@ -1,11 +1,10 @@
-<?php namespace Znck\Tests\Trust\Traits;
+<?php
 
-use GrahamCampbell\TestBench\AbstractPackageTestCase;
-use Znck\Tests\Trust\Models\User;
+namespace Znck\Tests\Trust\Traits;
+
 use Znck\Tests\Trust\TestCase;
 use Znck\Trust\Models\Permission;
 use Znck\Trust\Models\Role;
-use Znck\Trust\TrustServiceProvider;
 
 class PermissibleTest extends TestCase
 {

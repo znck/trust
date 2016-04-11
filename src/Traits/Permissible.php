@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -7,7 +9,7 @@ use Znck\Trust\Contracts\Permission as PermissionInterface;
 use Znck\Trust\Contracts\Role as RoleInterface;
 
 /**
- * Class Permissible
+ * Class Permissible.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|Permission[] permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|RoleInterface[] roles
@@ -53,9 +55,10 @@ trait Permissible
     public function rolePermissions()
     {
         $permission = app(config('znck.trust.models.permission'));
-        if (! $permission instanceof Model or ! $permission instanceof PermissionInterface) {
+        if (!$permission instanceof Model or !$permission instanceof PermissionInterface) {
             throw new InvalidArgumentException('[trust.models.permission] should be instance of '.Model::class.' and it should implement '.PermissionInterface::class);
         }
+
         return $permission
             ->select(['permissions.*', 'permission_role.created_at as pivot_created_at', 'permission_role.updated_at as pivot_updated_at'])
             ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
@@ -72,9 +75,10 @@ trait Permissible
      */
     public function getPermissionsAttribute()
     {
-        if (! $this->cached_permissions) {
+        if (!$this->cached_permissions) {
             $this->cached_permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get());
         }
+
         return $this->cached_permissions;
     }
 
@@ -88,6 +92,7 @@ trait Permissible
         if ($role = $this->roles->sortByDesc('level')->first()) {
             return $role->level;
         }
+
         return 0;
     }
 
@@ -103,7 +108,7 @@ trait Permissible
 
     protected function canAny(array $permissions)
     {
-        return ! $this->filterCollection($permissions, $this->permissions)->isEmpty();
+        return !$this->filterCollection($permissions, $this->permissions)->isEmpty();
     }
 
     protected function canAll(array $permissions)
@@ -133,52 +138,52 @@ trait Permissible
                     }
                     throw new InvalidArgumentException('Permission should be string or instance of '.Permission::class);
                 }, $permissions),
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         if ($permissions instanceof PermissionInterface) {
             return [
                 'items' => [$permissions->slug],
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         if ($permissions instanceof Collection) {
             return [
                 'items' => $permissions->pluck('slug')->toArray(),
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         throw new InvalidArgumentException('Invalid permission format.');
     }
-    
+
     public function checkRole($roles)
     {
         $roles = $this->parseRoles($roles);
         if (hash_equals('any', $roles['query'])) {
             return $this->hasAny($roles['items']);
         }
+
         return $this->hasAll($roles['items']);
     }
 
     protected function hasAny(array $roles)
     {
-        return ! $this->filterCollection($roles, $this->roles)->isEmpty();
+        return !$this->filterCollection($roles, $this->roles)->isEmpty();
     }
 
     protected function hasAll(array $roles)
     {
         return count($roles) === $this->filterCollection($roles, $this->roles)->count();
     }
-    
+
     public function parseRoles($roles)
     {
         if (is_string($roles)) {
             return $this->parseRolePermissionQuery($roles);
         }
-
 
         if (is_array($roles)) {
             return [
@@ -191,21 +196,21 @@ trait Permissible
                     }
                     throw new InvalidArgumentException('Role should be string or instance of '.RoleInterface::class);
                 }, $roles),
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         if ($roles instanceof RoleInterface) {
             return [
                 'items' => [$roles->slug],
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         if ($roles instanceof Collection) {
             return [
                 'items' => $roles->pluck('slug')->toArray(),
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
@@ -224,18 +229,18 @@ trait Permissible
         if (str_contains($query, ',')) {
             return [
                 'items' => explode(',', $query),
-                'query' => 'all'
+                'query' => 'all',
             ];
         }
 
         return [
             'items' => [$query],
-            'query' => 'all'
+            'query' => 'all',
         ];
     }
 
     /**
-     * @param array $choose
+     * @param array      $choose
      * @param Collection $source
      *
      * @return Collection
@@ -260,10 +265,11 @@ trait Permissible
      */
     public function assignRole($role)
     {
-        if (! $this->roles->contains($role)) {
+        if (!$this->roles->contains($role)) {
             $this->roles()->attach($role);
             unset($this->relations['roles']);
             $this->cached_permissions = null;
+
             return true;
         }
 
@@ -282,9 +288,9 @@ trait Permissible
         $return = $this->roles()->detach($role);
         $this->load('roles');
         $this->cached_permissions = null;
+
         return $return;
     }
-
 
     /**
      * Attach permission to a role.
@@ -295,9 +301,10 @@ trait Permissible
      */
     public function attachPermission($permission)
     {
-        if (! $this->permissions->contains($permission)) {
+        if (!$this->permissions->contains($permission)) {
             $this->userPermissions()->attach($permission);
             $this->cached_permissions = null;
+
             return true;
         }
 
@@ -314,6 +321,7 @@ trait Permissible
     public function detachPermission($permission)
     {
         $this->cached_permissions = null;
+
         return $this->userPermissions()->detach($permission);
     }
 
@@ -325,6 +333,7 @@ trait Permissible
     public function detachAllPermissions()
     {
         $this->cached_permissions = null;
+
         return $this->userPermissions()->detach();
     }
 }

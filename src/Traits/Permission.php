@@ -1,7 +1,9 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 /**
- * Class PermissionHasRelations
+ * Class PermissionHasRelations.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[] roles
  * @property-read \Illuminate\Database\Eloquent\Collection users

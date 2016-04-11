@@ -1,9 +1,11 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Znck\Trust\Contracts\Permission as PermissionInterface;
 
 /**
- * Class RoleHasRelations
+ * Class RoleHasRelations.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|PermissionInterface[] permissions
  * @property-read \Illuminate\Database\Eloquent\Collection users
@@ -45,9 +47,10 @@ trait Role
      */
     public function attachPermission($permission)
     {
-        if (! $this->permissions()->get()->contains($permission)) {
+        if (!$this->permissions()->get()->contains($permission)) {
             $this->permissions()->attach($permission);
             unset($this->relations['permissions']);
+
             return true;
         }
 
@@ -65,6 +68,7 @@ trait Role
     {
         $return = $this->permissions()->detach($permission);
         unset($this->relations['permissions']);
+
         return $return;
     }
 
@@ -77,6 +81,7 @@ trait Role
     {
         $return = $this->permissions()->detach();
         unset($this->relations['permissions']);
+
         return $return;
     }
 }

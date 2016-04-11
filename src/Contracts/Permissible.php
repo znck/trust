@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Contracts;
+<?php
+
+namespace Znck\Trust\Contracts;
 
 interface Permissible
 {
@@ -7,7 +9,7 @@ interface Permissible
      *
      * `$permissions` can have following format:
      *      - permission name; eg: 'user.create'
-     *      - permission query 
+     *      - permission query
      *          - any one: 'user.create|user.delete'
      *          - all: 'user.create,user.delete'
      *      - an array of permission names; eg: ['user.create', 'user.delete']
