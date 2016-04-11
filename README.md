@@ -91,36 +91,37 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
     ```
 1. Validating user permissions:  
     It provides two methods; `checkRoles` and `checkPermissions`.
-    - `checkPermissions($permissions)` returns true if user has required permissions.
-        `$permissions` can have following format:
-             - permission name; eg: `'user.create'`
-             - permission query 
-                 - any one: `'user.create|user.delete'`
-                 - all: `'user.create,user.delete'`
-             - an array of permission names; eg: `['user.create', 'user.delete']`
-             - an array of permission objects (objects implementing `Znck\Trust\Contracts\Permission`)
-             - a collection of permission objects (objects implementing `Znck\Trust\Contracts\Permission`)
-    - `checkRoles($roles)` returns true if user has required roles.
-        `$roles` can have following format:
-             - role name; eg: `'user'`
-             - role query
-                 - any one: `'user|admin'`
-                 - all: `'user,admin'`
-             - an array of role names; eg: `['user', 'admin']`
-             - an array of role objects (objects implementing `Znck\Trust\Contracts\Role`)
-             - a collection of role objects (objects implementing `Znck\Trust\Contracts\Role`)
+    - `checkPermissions($permissions)` returns true if user has required permissions.  
+      `$permissions` can have following format:  
+      - permission name; eg: `'user.create'`  
+      - permission query   
+         - any one: `'user.create|user.delete'`  
+         - all: `'user.create,user.delete'`  
+      - an array of permission names; eg: `['user.create', 'user.delete']`  
+      - an array of permission objects (objects implementing `Znck\Trust\Contracts\Permission`)  
+      - a collection of permission objects (objects implementing `Znck\Trust\Contracts\Permission`)  
+    - `checkRoles($roles)` returns true if user has required roles.  
+      `$roles` can have following format:  
+       - role name; eg: `'user'`  
+       - role query  
+           - any one: `'user|admin'`  
+           - all: `'user,admin'`  
+       - an array of role names; eg: `['user', 'admin']`  
+       - an array of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
+       - a collection of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
 1. Custom models and configuration:    
-    - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.
-        ``` php 
-        <?php return [
-            'models' => [
-                'user' => App\User::class,
-                'role' => App\Role::class,
-                'permission' => App\Permission::class,
-            ]
-        ];
-        ```
-    - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
+  - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.  
+
+    ``` php 
+    <?php return [
+        'models' => [
+            'user' => App\User::class,
+            'role' => App\Role::class,
+            'permission' => App\Permission::class,
+        ]
+    ];
+    ```
+  - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
 
 ## Change log
 
