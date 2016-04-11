@@ -74,8 +74,7 @@ You can also customize `trust` using configuration file. Just use
 and this would create `config/trust.php` file. See [usage guide](#usage) for details.
 
 ## Usage
-1. **Switch on `Trust`:**  
-    `User` model should implement `Znck\Trust\Contracts\Permissible` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permissible`. Your `app/User.php` or the user model file should look like this.
+1. **Switch on `Trust`:** `User` model should implement `Znck\Trust\Contracts\Permissible` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permissible`. Your `app/User.php` or the user model file should look like this.
     ``` php
     <?php namespace \App;
     
@@ -89,8 +88,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         ...
     }
     ```
-1. **Check roles & permissions:**  
-    It provides two methods; `checkRoles` and `checkPermissions`.
+1. **Check roles & permissions:** It provides two methods; `checkRoles` and `checkPermissions`.
     - `checkPermissions($permissions)` returns true if user has required permissions.  
       `$permissions` can have following format:  
       - permission name; eg: `'user.create'`  
@@ -122,9 +120,8 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         ];
         ```
     - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
-1. **Custom models:**  
-    Similar to `User` model, `Role` and `Permission` model can have custom implementation.   
-    - `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the user model file should look like this.
+1. **Custom models:** Similar to `User` model, `Role` and `Permission` models can have custom implementation.   
+    - `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the role model file should look like this.
     
         ``` php
         <?php namespace \App;
@@ -140,7 +137,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         }
         ```
     
-    - `Permission` model should implement `Znck\Trust\Contracts\Permission` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permission`. Your `app/Permission.php` or the user model file should look like this.
+    - `Permission` model should implement `Znck\Trust\Contracts\Permission` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permission`. Your `app/Permission.php` or the permission model file should look like this.
     
         ``` php
         <?php namespace \App;
@@ -175,7 +172,7 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
+If you discover any security related issues, please email hi@znck.me instead of using the issue tracker.
 
 ## Credits
 
