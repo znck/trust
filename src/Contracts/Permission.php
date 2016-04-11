@@ -1,7 +1,9 @@
-<?php namespace Znck\Trust\Contracts;
+<?php
+
+namespace Znck\Trust\Contracts;
 
 /**
- * Interface Permission
+ * Interface Permission.
  *
  * @property string name
  * @property string slug

@@ -4,12 +4,9 @@
  *
  * Author: Rahul Kadyan, <hi@znck.me>
  */
-
 namespace Znck\Trust;
 
-
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Znck\Trust\Commands\MigrationCommand;
 
 class TrustServiceProvider extends BaseServiceProvider
 {

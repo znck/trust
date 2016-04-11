@@ -1,4 +1,6 @@
-<?php namespace Znck\Tests\Trust;
+<?php
+
+namespace Znck\Tests\Trust;
 
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -26,12 +28,10 @@ class TestCase extends AbstractPackageTestCase
         $this->app['config']['auth.model'] = User::class;
     }
 
-
     protected function getServiceProviderClass($app)
     {
         return TrustServiceProvider::class;
     }
-
 
     /**
      * @return User
