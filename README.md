@@ -74,7 +74,7 @@ You can also customize `trust` using configuration file. Just use
 and this would create `config/trust.php` file. See [usage guide](#usage) for details.
 
 ## Usage
-1. Switch on `Trust`:  
+1. **Switch on `Trust`:**  
     `User` model should implement `Znck\Trust\Contracts\Permissible` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Permissible`. Your `app/User.php` or the user model file should look like this.
     ``` php
     <?php namespace \App;
@@ -89,7 +89,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         ...
     }
     ```
-1. Validating user permissions:  
+1. **Check roles & permissions:**  
     It provides two methods; `checkRoles` and `checkPermissions`.
     - `checkPermissions($permissions)` returns true if user has required permissions.  
       `$permissions` can have following format:  
@@ -109,7 +109,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
        - an array of role names; eg: `['user', 'admin']`  
        - an array of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
        - a collection of role objects (objects implementing `Znck\Trust\Contracts\Role`)  
-1. Configuration:    
+1. **Configuration:**    
     - Default values for `role` and `permission` are `Znck\Trust\Models\Role` and `Znck\Trust\Models\Permissions` respectively. You can override these values in `config/trust.php`, set `models.role` and `models.permission`. Additionally you can set `models.user` to configure your `user` model. Your `config/trust.php` file should look like this.
     
         ``` php 
@@ -122,7 +122,7 @@ and this would create `config/trust.php` file. See [usage guide](#usage) for det
         ];
         ```
     - Default value for `user` is null but it falls back to `providers.users.model` value from `config/auth.php`.
-1. Custom models:  
+1. **Custom models:**  
     Similar to `User` model, `Role` and `Permission` model can have custom implementation.   
     - `Role` model should implement `Znck\Trust\Contracts\Role` interface and this can be done easily by plugging in trait `Znck\Trust\Traits\Role`. Your `app/Role.php` or the user model file should look like this.
     
