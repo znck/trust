@@ -1,17 +1,27 @@
-<?php
-
-namespace Znck\Trust\Traits;
+<?php namespace Znck\Trust\Traits;
 
 /**
  * Class PermissionHasRelations.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[] roles
  * @property-read \Illuminate\Database\Eloquent\Collection users
- *
- * @method \Illuminate\Database\Eloquent\Relations\BelongsToMany belongsToMany(string $related)
  */
 trait Permission
 {
+    public static function bootPermission()
+    {
+        self::created(function () {
+            trust()->permissions(true);
+        });
+
+        self::updated(function () {
+            trust()->permissions(true);
+        });
+
+        self::deleted(function () {
+            trust()->permissions(true);
+        });
+    }
     /**
      * Permission belongs to many roles.
      *
@@ -19,7 +29,7 @@ trait Permission
      */
     public function roles()
     {
-        return $this->belongsToMany(config('znck.trust.models.role'))->withTimestamps();
+        return $this->belongsToMany(config('trust.models.role'))->withTimestamps();
     }
 
     /**
@@ -29,6 +39,6 @@ trait Permission
      */
     public function users()
     {
-        return $this->belongsToMany(config('znck.trust.models.user', config('auth.providers.users.model')))->withTimestamps();
+        return $this->belongsToMany(config('trust.models.user') ?? config('auth.providers.users.model'))->withTimestamps();
     }
 }

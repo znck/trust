@@ -24,29 +24,4 @@ interface Role
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users();
-
-    /**
-     * Attach permission to a role.
-     *
-     * @param string|int|Permission $permission
-     *
-     * @return self
-     */
-    public function attachPermission($permission);
-
-    /**
-     * Detach permission from a role.
-     *
-     * @param int|string|Permission $permission
-     *
-     * @return int
-     */
-    public function detachPermission($permission);
-
-    /**
-     * Detach all permissions.
-     *
-     * @return int
-     */
-    public function detachAllPermissions();
 }

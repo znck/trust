@@ -15,11 +15,6 @@ class TestCase extends AbstractPackageTestCase
     {
         $this->artisan('migrate', ['--realpath' => realpath(__DIR__.'/migrations/')]);
         $this->artisan('migrate', ['--realpath' => realpath(__DIR__.'/../migrations/')]);
-
-        $this->beforeApplicationDestroyed(function () {
-            $this->artisan('migrate:rollback');
-            $this->artisan('migrate:rollback');
-        });
     }
 
     public function setUp()

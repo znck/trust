@@ -12,14 +12,17 @@ class CreateRoleUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('role_id')->unsigned()->index();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-            $table->integer('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->timestamps();
-        });
+        Schema::create(
+            'role_user',
+            function (Blueprint $table) {
+                $table->unsignedInteger('user_id')->index();
+                $table->unsignedInteger('role_id')->index();
+                $table->timestamps();
+
+                $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            }
+        );
     }
 
     /**
@@ -29,10 +32,13 @@ class CreateRoleUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('role_user', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropForeign(['user_id']);
-        });
-        Schema::drop('role_user');
+        Schema::table(
+            'role_user',
+            function (Blueprint $table) {
+                $table->dropForeign(['role_id']);
+                $table->dropForeign(['user_id']);
+                $table->drop();
+            }
+        );
     }
 }
