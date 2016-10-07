@@ -1,7 +1,6 @@
 <?php namespace Znck\Trust;
 
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Debug\Dumper;
 use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Role;
 

@@ -1,7 +1,6 @@
 <?php namespace Znck\Trust\Traits;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Debug\Dumper;
 use Znck\Trust\Contracts\Permission as PermissionContract;
 use Znck\Trust\Contracts\Role as RoleContract;
 use Znck\Trust\Events\PermissionUsed;
