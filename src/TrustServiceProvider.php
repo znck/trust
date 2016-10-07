@@ -18,7 +18,7 @@ class TrustServiceProvider extends BaseServiceProvider
      */
     public function boot() {
         $this->publishes([__DIR__.'/../config/trust.php' => config_path('trust.php')], 'trust-config');
-        $this->publishes([__DIR__.'/../trust' => app_path('trust')], 'trust');
+        $this->publishes([__DIR__.'/../trust' => base_path('trust')], 'trust');
 
         if ($this->app->runningInConsole()) {
             $this->registerMigrations();

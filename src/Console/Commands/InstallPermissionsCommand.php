@@ -36,7 +36,7 @@ class InstallPermissionsCommand extends Command
      * @return void
      */
     public function handle() {
-        $permissions = $this->file->getRequire(app_path(config('trust.permissions')));
+        $permissions = $this->file->getRequire(base_path(config('trust.permissions')));
 
         $create = 0;
         $update = 0;

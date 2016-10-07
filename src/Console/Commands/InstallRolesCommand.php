@@ -40,7 +40,7 @@ class InstallRolesCommand extends Command
      * @return void
      */
     public function handle() {
-        $roles = $this->file->getRequire(app_path(config('trust.permissions')));;
+        $roles = $this->file->getRequire(base_path(config('trust.permissions')));;
 
         $this->call('trust:permissions');
         $all = Permission::all(['id', 'slug']);
