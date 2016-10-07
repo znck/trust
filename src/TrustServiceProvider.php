@@ -1,8 +1,8 @@
 <?php namespace Znck\Trust;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Zero\Console\Commands\Installation\InstallPermissionsCommand;
-use Zero\Console\Commands\Installation\InstallRolesCommand;
+use Znck\Trust\Console\Commands\InstallPermissionsCommand;
+use Znck\Trust\Console\Commands\InstallRolesCommand;
 use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Role;
 

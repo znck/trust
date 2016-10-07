@@ -1,4 +1,4 @@
-<?php namespace Zero\Console\Commands\Installation;
+<?php namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
