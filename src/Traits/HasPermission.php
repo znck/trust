@@ -4,6 +4,7 @@ use Illuminate\Support\Collection;
 use Znck\Trust\Contracts\Permission as PermissionContract;
 use Znck\Trust\Contracts\Role as RoleContract;
 use Znck\Trust\Events\PermissionUsed;
+use Znck\Trust\Events\RoleUsed;
 use Znck\Trust\Trust;
 
 /**
@@ -15,10 +16,33 @@ trait HasPermission
 
     private $cached_permissions;
 
+    private $role_slugs;
+
     private $permission_slugs;
 
     public function refreshPermissions() {
         $this->cached_roles = $this->cached_permissions = $this->permission_slugs = null;
+    }
+
+    /**
+     * @param RoleContract|string $role
+     *
+     * @return bool
+     */
+    public function assumesRoleOf($role) {
+        if ($role instanceof RoleContract) {
+            $role = $role->slug;
+        } elseif (!is_string($role)) {
+            return false;
+        }
+
+        if ($this->getRoleNames()->has($role)) {
+            event(new RoleUsed($this, $role));
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -56,6 +80,17 @@ trait HasPermission
             });
     }
 
+    public function getRoleNames() {
+        if (!is_null($this->role_slugs)) {
+            return $this->role_slugs;
+        }
+
+        return $this->role_slugs = cache()
+            ->rememberForever(Trust::ROLE_KEY.':'.$this->getKey(), function () {
+                return $this->getRoles()->pluck('id', 'slug');
+            });
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[]
      */
@@ -69,6 +104,7 @@ trait HasPermission
         /** @var \Illuminate\Support\Collection $names */
         $names = $this->getRoles()->reduce(
             function (Collection $result, RoleContract $role) {
+                /** @noinspection PhpUndefinedFieldInspection */
                 return $result->merge($role->permissions);
             },
             $this->permissions ?? new Collection()
@@ -92,6 +128,7 @@ trait HasPermission
         $this->load('roles');
 
         /** @var \Illuminate\Support\Collection $names */
+        /** @noinspection PhpUndefinedFieldInspection */
         $names = $this->roles->pluck('slug', 'id');
 
         return $this->cached_roles = trust()->roles()->filter(

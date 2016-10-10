@@ -49,24 +49,35 @@ trait Permissible
         return null;
     }
 
+    /**
+     * @param string|RoleContract|array|Collection $role
+     */
     public function assignRole($role) {
         if ($role = $this->collectRoles($role)) {
             $this->roles()->attach($role);
 
             cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
+            cache()->forget(Trust::ROLE_KEY.':'.$this->getKey());
             $this->refreshPermissions();
         }
     }
 
+    /**
+     * @param string|RoleContract|array|Collection $role
+     */
     public function revokeRole($role) {
         if ($role = $this->collectRoles($role)) {
             $this->roles()->detach($role);
 
             cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
+            cache()->forget(Trust::ROLE_KEY.':'.$this->getKey());
             $this->refreshPermissions();
         }
     }
 
+    /**
+     * @param string|PermissionContract|array|Collection $permission
+     */
     public function givePermission($permission) {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->attach($permission);
@@ -76,6 +87,9 @@ trait Permissible
         }
     }
 
+    /**
+     * @param string|PermissionContract|array|Collection $permission
+     */
     public function revokePermission($permission) {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->detach($permission);
