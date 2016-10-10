@@ -4,6 +4,7 @@ use Illuminate\Support\Collection;
 use Znck\Trust\Contracts\Permission as PermissionContract;
 use Znck\Trust\Contracts\Role as RoleContract;
 use Znck\Trust\Events\PermissionUsed;
+use Znck\Trust\Trust;
 
 /**
  * @internal Znck\Trust
@@ -16,8 +17,7 @@ trait HasPermission
 
     private $permission_slugs;
 
-    public function refreshPermissions()
-    {
+    public function refreshPermissions() {
         $this->cached_roles = $this->cached_permissions = $this->permission_slugs = null;
     }
 
@@ -26,12 +26,10 @@ trait HasPermission
      *
      * @return bool
      */
-    public function hasPermissionTo($permission)
-    {
+    public function hasPermissionTo($permission) {
         if ($permission instanceof PermissionContract) {
-            event(new PermissionUsed($this, $permission));
             $permission = $permission->slug;
-        } elseif (! is_string($permission)) {
+        } elseif (!is_string($permission)) {
             return false;
         }
 
@@ -47,21 +45,22 @@ trait HasPermission
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getPermissionNames()
-    {
-        if (! is_null($this->permission_slugs)) {
+    public function getPermissionNames() {
+        if (!is_null($this->permission_slugs)) {
             return $this->permission_slugs;
         }
 
-        return $this->permission_slugs = $this->getPermissions()->pluck('id', 'slug');
+        return $this->permission_slugs = cache()
+            ->rememberForever(Trust::PERMISSION_KEY.':'.$this->getKey(), function () {
+                return $this->getPermissions()->pluck('id', 'slug');
+            });
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[]
      */
-    public function getPermissions()
-    {
-        if (! is_null($this->cached_permissions)) {
+    public function getPermissions() {
+        if (!is_null($this->cached_permissions)) {
             return $this->cached_permissions;
         }
 
@@ -85,9 +84,8 @@ trait HasPermission
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[]
      */
-    public function getRoles()
-    {
-        if (! is_null($this->cached_roles)) {
+    public function getRoles() {
+        if (!is_null($this->cached_roles)) {
             return $this->cached_roles;
         }
 
