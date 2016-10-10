@@ -1,5 +1,9 @@
 <?php namespace Znck\Trust\Traits;
 
+use Illuminate\Support\Collection;
+use Znck\Trust\Jobs\EvictCachedRolePermissions;
+use Znck\Trust\Observers\RoleObserver;
+use Znck\Trust\Contracts\Permission as PermissionContract;
 
 /**
  * Class RoleHasRelations.
@@ -9,25 +13,46 @@
  */
 trait Role
 {
-    public static function bootRole()
-    {
-        self::created(
-            function () {
-                trust()->roles(true);
-            }
-        );
+    public static function bootRole() {
+        self::observe(RoleObserver::class);
+    }
 
-        self::updated(
-            function () {
-                trust()->roles(true);
-            }
-        );
+    protected function collectPermissions($permission) {
+        if (is_string($permission)) {
+            $permission = app(PermissionContract::class)->whereSlug($permission)->first();
+        }
 
-        self::deleted(
-            function () {
-                trust()->roles(true);
+        if (is_array($permission) or $permission instanceof Collection) {
+            $permission = new Collection($permission);
+
+            if (is_string($permission->first())) {
+                return app(PermissionContract::class)->whereIn('slug', $permission->toArray())->get();
+            } elseif ($permission->first() instanceof PermissionContract) {
+                return $permission;
             }
-        );
+        } elseif ($permission instanceof PermissionContract) {
+            return $permission;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string|PermissionContract|Collection|array $permission
+     */
+    public function addPermission($permission) {
+        if ($permission = $this->collectPermissions($permission)) {
+            $this->permissions()->attach($permission);
+            dispatch(new EvictCachedRolePermissions($this));
+        }
+
+    }
+
+    public function removePermission($permission) {
+        if ($permission = $this->collectPermissions($permission)) {
+            $this->permissions()->detach($permission);
+            dispatch(new EvictCachedRolePermissions($this));
+        }
     }
 
     /**
@@ -35,8 +60,7 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions()
-    {
+    public function permissions() {
         return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
     }
 
@@ -45,8 +69,7 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsToMany(config('trust.models.user') ?? config('auth.providers.users.model'))->withTimestamps();
     }
 }
