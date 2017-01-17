@@ -19,7 +19,7 @@ trait Role
     /**
      * Add permissions from role.
      *
-     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @param int|string|Permission|Collection $permissions List of permissions
      *
      * @return $this
      */
@@ -35,7 +35,7 @@ trait Role
     /**
      * Remove permissions from role.
      *
-     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @param int|string|Permission|Collection $permissions List of permissions
      *
      * @return $this
      */

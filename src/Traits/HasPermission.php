@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Znck\Trust\Contracts\Permission as PermissionContract;
 use Znck\Trust\Contracts\Role as RoleContract;
@@ -14,7 +16,7 @@ trait HasPermission
     /**
      * Check if the user has Role.
      *
-     * @param  string $role
+     * @param string $role
      *
      * @return bool
      */
@@ -22,7 +24,7 @@ trait HasPermission
     {
         if ($role instanceof RoleContract) {
             $role = $role->slug;
-        } elseif (! is_string($role)) {
+        } elseif (!is_string($role)) {
             return false;
         }
 
@@ -38,7 +40,7 @@ trait HasPermission
     /**
      * Checks if the user has Permission.
      *
-     * @param  string $permission
+     * @param string $permission
      *
      * @return bool
      */
@@ -46,7 +48,7 @@ trait HasPermission
     {
         if ($permission instanceof PermissionContract) {
             $permission = $permission->slug;
-        } elseif (! is_string($permission)) {
+        } elseif (!is_string($permission)) {
             return false;
         }
 
@@ -63,7 +65,7 @@ trait HasPermission
     }
 
     /**
-     * A collection of permission names (slugs)
+     * A collection of permission names (slugs).
      *
      * @return Illuminate\Support\Collection
      */
@@ -73,7 +75,7 @@ trait HasPermission
     }
 
     /**
-     * A collection of role names (slugs)
+     * A collection of role names (slugs).
      *
      * @return Illuminate\Support\Collection
      */

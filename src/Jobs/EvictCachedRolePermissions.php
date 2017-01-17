@@ -1,10 +1,12 @@
-<?php namespace Znck\Trust\Jobs;
+<?php
+
+namespace Znck\Trust\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
-use Znck\Trust\Contracts\Role;
 use Znck\Trust\Contracts\Permission;
+use Znck\Trust\Contracts\Role;
 
 class EvictCachedRolePermissions implements ShouldQueue
 {
@@ -38,7 +40,7 @@ class EvictCachedRolePermissions implements ShouldQueue
     /**
      * Clear cache for role.
      *
-     * @param  Role $role
+     * @param Role $role
      *
      * @return void
      */

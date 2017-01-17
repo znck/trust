@@ -1,10 +1,12 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
-use \Znck\Trust\Contracts\Role as RoleContract;
-use \Znck\Trust\Contracts\Permission as PermissionContract;
-use Znck\Trust\Trust;
+use Znck\Trust\Contracts\Permission as PermissionContract;
+use Znck\Trust\Contracts\Role as RoleContract;
 use Znck\Trust\Observers\UserObserver;
+use Znck\Trust\Trust;
 
 trait Permissible
 {
@@ -23,7 +25,7 @@ trait Permissible
     /**
      * Assign role to the user.
      *
-     * @param  int|string|RoleContract|Collection $roles List of roles.
+     * @param int|string|RoleContract|Collection $roles List of roles.
      *
      * @return $this
      */
@@ -39,7 +41,7 @@ trait Permissible
     /**
      * Revoke role from the user.
      *
-     * @param  int|string|RoleContract|Collection $roles List of roles.
+     * @param int|string|RoleContract|Collection $roles List of roles.
      *
      * @return $this
      */
@@ -55,7 +57,7 @@ trait Permissible
     /**
      * Grant explicit permission to the user.
      *
-     * @param  int|string|PermissionContract|Collection $permissions List of permissions.
+     * @param int|string|PermissionContract|Collection $permissions List of permissions.
      *
      * @return $this
      */
@@ -71,7 +73,7 @@ trait Permissible
     /**
      * Revoke explicit permission from the user.
      *
-     * @param  int|string|PermissionContract|Collection $permissions List of permissions.
+     * @param int|string|PermissionContract|Collection $permissions List of permissions.
      *
      * @return $this
      */
@@ -89,7 +91,7 @@ trait Permissible
     /**
      * Fetch role ids from given roles.
      *
-     * @param  int|string|Role|Collection $roles List of roles
+     * @param int|string|Role|Collection $roles List of roles
      *
      * @return array List of model keys
      */

@@ -1,11 +1,13 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Znck\Trust\Observers\PermissionObserver;
 
 trait Permission
 {
     /**
-     * Add Permission Observers
+     * Add Permission Observers.
      *
      * @return void
      */
