@@ -11,7 +11,7 @@
 
 return [
     'delete_comment' => [
-        'name' => 'Delete Comments',
+        'name'        => 'Delete Comments',
         'description' => 'Allow user to delete comments',
     ],
 ];

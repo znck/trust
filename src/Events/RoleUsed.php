@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Events;
+<?php
+
+namespace Znck\Trust\Events;
 
 class RoleUsed
 {
@@ -12,7 +14,8 @@ class RoleUsed
      */
     public $role;
 
-    public function __construct($user, string $role) {
+    public function __construct($user, string $role)
+    {
         $this->user = $user;
         $this->role = $role;
     }

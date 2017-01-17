@@ -8,7 +8,6 @@ namespace Znck\Trust\Contracts;
  * @property string name
  * @property string slug
  * @property string description
- *
  */
 interface Permission
 {

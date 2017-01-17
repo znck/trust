@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Jobs;
+<?php
+
+namespace Znck\Trust\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -15,7 +17,8 @@ class EvictCachedRolePermissions implements ShouldQueue
      */
     protected $role;
 
-    public function __construct($role) {
+    public function __construct($role)
+    {
         $this->role = $role;
     }
 
@@ -24,7 +27,8 @@ class EvictCachedRolePermissions implements ShouldQueue
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         $this->role->users()->chunk(50, function (Collection $users) {
             $users->each(function (Model $user) {
                 cache()->forget(Trust::PERMISSION_KEY.':'.$user->getKey());
