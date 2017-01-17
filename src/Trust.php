@@ -1,9 +1,11 @@
 <?php namespace Znck\Trust;
 
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Permissible;
 use Znck\Trust\Contracts\Role;
+use Znck\Trust\Jobs\EvictCachedRolePermissions;
 
 class Trust
 {
@@ -36,6 +38,13 @@ class Trust
     protected $cache;
 
     /**
+     * Laravel bus dispatcher
+     *
+     * @var Illuminate\Contracts\Bus\Dispatcher
+     */
+    protected $dispatcher;
+
+    /**
      * Determines whether to use cache or not.
      *
      * @var boolean
@@ -50,9 +59,10 @@ class Trust
     protected $inMemoryCache = [];
 
 
-    public function __construct(Repository $cache)
+    public function __construct(Repository $cache, Dispatcher $dispatcher)
     {
         $this->cache = $cache;
+        $this->dispatcher = $dispatcher;
         $this->caching = app()->environment() === 'production';
     }
 
@@ -118,12 +128,12 @@ class Trust
 
     public function clearPermissionCache(Permission $permission)
     {
-        $permission->roles->each([$this, 'clearRoleCache']);
+        $this->dispatcher->dispatch(new EvictCachedRolePermissions($permission));
     }
 
     public function clearRoleCache(Role $role)
     {
-        $role->user->each([$this, 'clearUserCache']);
+        $this->dispatcher->dispatch(new EvictCachedRolePermissions($role));
     }
 
     public function clearUserCache(Permissible $user)
