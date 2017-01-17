@@ -5,10 +5,9 @@ namespace Znck\Trust\Contracts;
 /**
  * Interface Permission.
  *
- * @property string name
- * @property string slug
- * @property string description
- *
+ * @property string $name
+ * @property string $slug
+ * @property string $description
  */
 interface Permission
 {
