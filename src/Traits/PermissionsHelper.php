@@ -9,7 +9,7 @@ trait PermissionsHelper {
      * @param  int|string|Permission|Collection $permissions List of permissions
      * @return array List of model keys
      */
-    private function getPermissionIds($permissions): array {
+    protected function getPermissionIds($permissions): array {
         if ($permissions instanceof Model) {
             $permissions = $permissions->getKey();
         }
