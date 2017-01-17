@@ -2,70 +2,62 @@
 
 use Illuminate\Contracts\Cache\Repository;
 use Znck\Trust\Contracts\Permission;
+use Znck\Trust\Contracts\Permissible;
 use Znck\Trust\Contracts\Role;
 
 class Trust
 {
-    const PERMISSION_KEY = 'znck.trust.permissions';
+    /**
+     * A cache key prefix to prevent collision.
+     *
+     * @var string
+     */
+    const CACHE_KEY = 'znck.trust.cache.';
 
-    const ROLE_KEY = 'znck.trust.roles';
-
+    /**
+     * Determines whether to run migrations or publish them.
+     *
+     * @var boolean
+     */
     public static $runMigrations = true;
 
     /**
-     * @var Contracts\Permissible
+     * Active user.
+     *
+     * @var Permissible
      */
     public $user;
 
     /**
+     * Instance of Laravel Cache.
+     *
      * @var \Illuminate\Contracts\Cache\Repository
      */
     protected $cache;
+
+    /**
+     * Determines whether to use cache or not.
+     *
+     * @var boolean
+     */
+    protected $caching;
+
+    /**
+     * Storage of in-memory caching of roles and permissions.
+     *
+     * @var array
+     */
+    protected $inMemoryCache = [];
 
 
     public function __construct(Repository $cache)
     {
         $this->cache = $cache;
+        $this->caching = app()->environment() === 'production';
     }
 
-
-    /**
-     * @param bool $forget
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|Permission[]|null
-     */
-    public function permissions(bool $forget = false)
-    {
-        if ($forget === true) {
-            return $this->cache->forget(self::PERMISSION_KEY);
-        }
-
-        return $this->cache->rememberForever(
-            self::PERMISSION_KEY,
-            function () {
-                return app(Permission::class)->with('roles')->get();
-            }
-        );
-    }
-
-
-    /**
-     * @param bool $forget
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|Role[]|null
-     */
-    public function roles(bool $forget = false)
-    {
-        if ($forget === true) {
-            return $this->cache->forget(self::ROLE_KEY);
-        }
-
-        return $this->cache->rememberForever(
-            self::ROLE_KEY,
-            function () {
-                return app(Role::class)->with('permissions')->get();
-            }
-        );
+    public function useCache(bool $state = true) {
+        $this->caching = $state;
     }
 
     public function to($permission)
@@ -73,19 +65,76 @@ class Trust
         return $this->getUser()->hasPermissionTo($permission);
     }
 
-    /**
-     * @return Contracts\Permissible
-     */
-    public function getUser(): Contracts\Permissible
+    public function is($role)
     {
-        return $this->user ?? auth()->user();
+        return $this->getUser()->canAssumeRole($role);
     }
 
-    /**
-     * @param Contracts\Permissible $user
-     */
-    public function setUser(Contracts\Permissible $user)
+    public function getUser(): Permissible
+    {
+        return $this->user ?? $this->guard->user();
+    }
+
+    public function setUser(Permissible $user)
     {
         $this->user = $user;
+    }
+
+    public function getRoles($callback) {
+        $key = $this->getUser()->getKey();
+
+        if (isset($this->inMemoryCache[$key])) {
+            if (isset($this->inMemoryCache[$key]['roles'])) {
+                return $this->inMemoryCache[$key]['roles'];
+            }
+        } else {
+            $this->inMemoryCache[$key] = [];
+        }
+
+        if ($this->caching !== true) {
+            $this->inMemoryCache[$key]['roles'] = call_user_func($callback);
+        }
+
+        return $this->inMemoryCache[$key]['roles'] = $this->cache->rememberForever(static::CACHE_KEY.'roles.'.$key, $callback);
+    }
+
+    public function getPermissions($callback) {
+        $key = $this->getUser()->getKey();
+
+        if (isset($this->inMemoryCache[$key])) {
+            if (isset($this->inMemoryCache[$key]['permissions'])) {
+                return $this->inMemoryCache[$key]['permissions'];
+            }
+        } else {
+            $this->inMemoryCache[$key] = [];
+        }
+
+        if ($this->caching !== true) {
+            $this->inMemoryCache[$key]['permissions'] = call_user_func($callback);
+        }
+
+        return $this->inMemoryCache[$key]['permissions'] = $this->cache->rememberForever(static::CACHE_KEY.'permissions.'.$key, $callback);
+    }
+
+    public function clearPermissionCache(Permission $permission)
+    {
+        $permission->roles->each([$this, 'clearRoleCache']);
+    }
+
+    public function clearRoleCache(Role $role)
+    {
+        $role->user->each([$this, 'clearUserCache']);
+    }
+
+    public function clearUserCache(Permissible $user)
+    {
+        $key = $user->getKey();
+
+        if (isset($this->inMemoryCache[$key])) {
+            unset($this->inMemoryCache[$key]);
+        }
+
+        $this->cache->forget(static::CACHE_KEY.'roles.'.$key);
+        $this->cache->forget(static::CACHE_KEY.'permissions.'.$key);
     }
 }
