@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Auth\AuthManager;
 use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Permissible;
 use Znck\Trust\Contracts\Role;
@@ -45,11 +46,18 @@ class Trust
     protected $dispatcher;
 
     /**
+     * Laravel auth guard
+     *
+     * @var Illuminate\Contracts\Auth\Guard
+     */
+    protected $guard;
+
+    /**
      * Determines whether to use cache or not.
      *
      * @var bool
      */
-    protected $caching;
+    protected $caching = true;
 
     /**
      * Storage of in-memory caching of roles and permissions.
@@ -59,38 +67,76 @@ class Trust
     protected $inMemoryCache = [];
 
 
-    public function __construct(Repository $cache, Dispatcher $dispatcher)
+    public function __construct(Repository $cache, Dispatcher $dispatcher, AuthManager $guard)
     {
         $this->cache = $cache;
         $this->dispatcher = $dispatcher;
-        $this->caching = app()->environment() === 'production';
+        $this->guard = $guard;
     }
 
-    public function useCache(bool $state = true)
+    /**
+     * Enable/Disable caching.
+     *
+     * @param  bool $state
+     *
+     * @return void
+     */
+    public function useCache(bool $state = null)
     {
-        $this->caching = $state;
+        $this->caching = is_null($state) ? true : $state;
     }
 
+    /**
+     * Check user has permission.
+     *
+     * @param  string $permission Permission name (slug)
+     *
+     * @return bool
+     */
     public function to($permission)
     {
         return $this->getUser()->hasPermissionTo($permission);
     }
 
+    /**
+     * Chech user has role.
+     *
+     * @param  string  $role Role name (slug)
+     *
+     * @return bool
+     */
     public function is($role)
     {
         return $this->getUser()->canAssumeRole($role);
     }
 
+    /**
+     * Get current user or fetch from guard.
+     *
+     * @return Permissible
+     */
     public function getUser(): Permissible
     {
         return $this->user ?? $this->guard->user();
     }
 
+    /**
+     * Set current user.
+     *
+     * @param Permissible $user
+     */
     public function setUser(Permissible $user)
     {
         $this->user = $user;
     }
 
+    /**
+     * Get/cache roles for current user.
+     *
+     * @param  callable $callback
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
     public function getRoles($callback)
     {
         $key = $this->getUser()->getKey();
@@ -110,6 +156,14 @@ class Trust
         return $this->inMemoryCache[$key]['roles'] = $this->cache->rememberForever(static::CACHE_KEY.'roles.'.$key, $callback);
     }
 
+    /**
+     * Get/cache permissions for current user.
+     * *
+     *
+     * @param  callable $callback
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
     public function getPermissions($callback)
     {
         $key = $this->getUser()->getKey();
@@ -129,16 +183,37 @@ class Trust
         return $this->inMemoryCache[$key]['permissions'] = $this->cache->rememberForever(static::CACHE_KEY.'permissions.'.$key, $callback);
     }
 
+    /**
+     * Delete cached permission.
+     *
+     * @param  Permission $permission
+     *
+     * @return void
+     */
     public function clearPermissionCache(Permission $permission)
     {
         $this->dispatcher->dispatch(new EvictCachedRolePermissions($permission));
     }
 
+    /**
+     * Delete cached role.
+     *
+     * @param  Role   $role
+     *
+     * @return void
+     */
     public function clearRoleCache(Role $role)
     {
         $this->dispatcher->dispatch(new EvictCachedRolePermissions($role));
     }
 
+    /**
+     * Delete cached roles and permmissions for the user.
+     *
+     * @param  Permissible $user
+     *
+     * @return void
+     */
     public function clearUserCache(Permissible $user)
     {
         $key = $user->getKey();
