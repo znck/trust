@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust;
+<?php
+
+namespace Znck\Trust;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Znck\Trust\Console\Commands\InstallPermissionsCommand;
@@ -16,7 +18,8 @@ class TrustServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    public function boot() {
+    public function boot()
+    {
         $this->publishes([__DIR__.'/../config/trust.php' => config_path('trust.php')], 'trust-config');
         $this->publishes([__DIR__.'/../trust' => base_path('trust')], 'trust');
 
@@ -25,7 +28,8 @@ class TrustServiceProvider extends BaseServiceProvider
         }
     }
 
-    protected function registerMigrations() {
+    protected function registerMigrations()
+    {
         if (Trust::$runMigrations) {
             $this->loadMigrationsFrom(__DIR__.'/../migrations');
 
@@ -45,7 +49,8 @@ class TrustServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
         $this->mergeConfigFrom(__DIR__.'/../config/trust.php', 'trust');
         $this->app->bind(Role::class, config('trust.models.role'));
         $this->app->bind(Permission::class, config('trust.models.permission'));
@@ -57,7 +62,8 @@ class TrustServiceProvider extends BaseServiceProvider
         $this->commands('command.trust.roles');
     }
 
-    public function provides() {
+    public function provides()
+    {
         return [Role::class, Permission::class, Trust::class, 'command.trust.roles', 'command.trust.permissions'];
     }
 }

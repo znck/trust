@@ -1,15 +1,18 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Illuminate\Support\Collection;
-use \Znck\Trust\Contracts\Role as RoleContract;
-use \Znck\Trust\Contracts\Permission as PermissionContract;
+use Znck\Trust\Contracts\Permission as PermissionContract;
+use Znck\Trust\Contracts\Role as RoleContract;
 use Znck\Trust\Trust;
 
 trait Permissible
 {
     use HasPermission;
 
-    protected function collectRoles($role) {
+    protected function collectRoles($role)
+    {
         if (is_string($role)) {
             $role = app(RoleContract::class)->whereSlug($role)->first();
         }
@@ -25,11 +28,10 @@ trait Permissible
         } elseif ($role instanceof RoleContract) {
             return $role;
         }
-
-        return null;
     }
 
-    protected function collectPermissions($permission) {
+    protected function collectPermissions($permission)
+    {
         if (is_string($permission)) {
             $permission = app(PermissionContract::class)->whereSlug($permission)->first();
         }
@@ -45,14 +47,13 @@ trait Permissible
         } elseif ($permission instanceof PermissionContract) {
             return $permission;
         }
-
-        return null;
     }
 
     /**
      * @param string|RoleContract|array|Collection $role
      */
-    public function assignRole($role) {
+    public function assignRole($role)
+    {
         if ($role = $this->collectRoles($role)) {
             $this->roles()->attach($role);
 
@@ -65,7 +66,8 @@ trait Permissible
     /**
      * @param string|RoleContract|array|Collection $role
      */
-    public function revokeRole($role) {
+    public function revokeRole($role)
+    {
         if ($role = $this->collectRoles($role)) {
             $this->roles()->detach($role);
 
@@ -78,7 +80,8 @@ trait Permissible
     /**
      * @param string|PermissionContract|array|Collection $permission
      */
-    public function givePermission($permission) {
+    public function givePermission($permission)
+    {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->attach($permission);
 
@@ -90,7 +93,8 @@ trait Permissible
     /**
      * @param string|PermissionContract|array|Collection $permission
      */
-    public function revokePermission($permission) {
+    public function revokePermission($permission)
+    {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->detach($permission);
 
@@ -104,7 +108,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(config('trust.models.role'))->withTimestamps();
     }
 
@@ -113,7 +118,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions() {
+    public function permissions()
+    {
         return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
     }
 }

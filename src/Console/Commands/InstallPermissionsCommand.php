@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Console\Commands;
+<?php
+
+namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -25,7 +27,8 @@ class InstallPermissionsCommand extends Command
      */
     private $file;
 
-    public function __construct(Filesystem $file) {
+    public function __construct(Filesystem $file)
+    {
         parent::__construct();
         $this->file = $file;
     }
@@ -35,7 +38,8 @@ class InstallPermissionsCommand extends Command
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         $permissions = $this->file->getRequire(base_path(config('trust.permissions')));
 
         $create = 0;
@@ -61,7 +65,8 @@ class InstallPermissionsCommand extends Command
      *
      * @return Permission
      */
-    protected function findPermission(string $slug) {
+    protected function findPermission(string $slug)
+    {
         return Permission::where('slug', $slug)->first();
     }
 }

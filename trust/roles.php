@@ -11,9 +11,9 @@
 
 return [
     'admin' => [
-        'name' => 'Administrator',
+        'name'        => 'Administrator',
         'description' => 'These users would have every available permission.',
-        'permissions' => [ '*' ],
+        'permissions' => ['*'],
     ],
     /*
     'moderator' => [

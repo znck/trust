@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Contracts;
+<?php
+
+namespace Znck\Trust\Contracts;
 
 interface Permissible
 {
