@@ -1,6 +1,4 @@
-<?php
-
-namespace Znck\Trust\Events;
+<?php namespace Znck\Trust\Events;
 
 class PermissionUsed
 {

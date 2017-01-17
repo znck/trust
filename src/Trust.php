@@ -1,6 +1,4 @@
-<?php
-
-namespace Znck\Trust;
+<?php namespace Znck\Trust;
 
 use Illuminate\Contracts\Cache\Repository;
 use Znck\Trust\Contracts\Permission;
@@ -24,10 +22,12 @@ class Trust
      */
     protected $cache;
 
+
     public function __construct(Repository $cache)
     {
         $this->cache = $cache;
     }
+
 
     /**
      * @param bool $forget
@@ -47,6 +47,7 @@ class Trust
             }
         );
     }
+
 
     /**
      * @param bool $forget

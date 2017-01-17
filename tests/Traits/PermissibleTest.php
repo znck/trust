@@ -2,6 +2,7 @@
 
 namespace Znck\Tests\Trust\Traits;
 
+use Illuminate\Support\Debug\Dumper;
 use Znck\Tests\Trust\TestCase;
 use Znck\Trust\Models\Permission;
 use Znck\Trust\Models\Role;

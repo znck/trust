@@ -1,21 +1,16 @@
-<?php
-
-namespace Znck\Trust\Observers;
+<?php namespace Znck\Trust\Observers;
 
 class RoleObserver
 {
-    public function created()
-    {
+    public function created() {
         trust()->roles(true);
     }
 
-    public function updated()
-    {
+    public function updated() {
         trust()->roles(true);
     }
 
-    public function deleted()
-    {
+    public function deleted() {
         trust()->roles(true);
     }
 }

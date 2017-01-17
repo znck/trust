@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('trust')) {
+if (! function_exists('trust')) {
     /**
      * @param $user
      *
@@ -10,7 +10,7 @@ if (!function_exists('trust')) {
     {
         $trust = app(\Znck\Trust\Trust::class);
 
-        if (!is_null($user)) {
+        if (! is_null($user)) {
             $trust->setUser($user);
         }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Znck\Trust\Contracts\Permissible;
 
 /**
- * Class User.
+ * Class User
  *
  * @internal Znck\Tests\Trust
  */
