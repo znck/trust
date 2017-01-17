@@ -10,7 +10,7 @@ trait PermissionsHelper
     /**
      * Fetch permission ids from given permissions.
      *
-     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @param int|string|Permission|Collection $permissions List of permissions
      *
      * @return array List of model keys
      */

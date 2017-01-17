@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Console\Commands;
+<?php
+
+namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;

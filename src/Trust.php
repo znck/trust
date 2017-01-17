@@ -1,10 +1,12 @@
-<?php namespace Znck\Trust;
+<?php
 
-use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Contracts\Bus\Dispatcher;
+namespace Znck\Trust;
+
 use Illuminate\Auth\AuthManager;
-use Znck\Trust\Contracts\Permission;
+use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cache\Repository;
 use Znck\Trust\Contracts\Permissible;
+use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Role;
 use Znck\Trust\Jobs\EvictCachedRolePermissions;
 
@@ -39,14 +41,14 @@ class Trust
     protected $cache;
 
     /**
-     * Laravel bus dispatcher
+     * Laravel bus dispatcher.
      *
      * @var Illuminate\Contracts\Bus\Dispatcher
      */
     protected $dispatcher;
 
     /**
-     * Laravel auth guard
+     * Laravel auth guard.
      *
      * @var Illuminate\Contracts\Auth\Guard
      */
@@ -66,7 +68,6 @@ class Trust
      */
     protected $inMemoryCache = [];
 
-
     public function __construct(Repository $cache, Dispatcher $dispatcher, AuthManager $guard)
     {
         $this->cache = $cache;
@@ -77,7 +78,7 @@ class Trust
     /**
      * Enable/Disable caching.
      *
-     * @param  bool $state
+     * @param bool $state
      *
      * @return void
      */
@@ -89,7 +90,7 @@ class Trust
     /**
      * Check user has permission.
      *
-     * @param  string $permission Permission name (slug)
+     * @param string $permission Permission name (slug)
      *
      * @return bool
      */
@@ -101,7 +102,7 @@ class Trust
     /**
      * Chech user has role.
      *
-     * @param  string  $role Role name (slug)
+     * @param string $role Role name (slug)
      *
      * @return bool
      */
@@ -133,7 +134,7 @@ class Trust
     /**
      * Get/cache roles for current user.
      *
-     * @param  callable $callback
+     * @param callable $callback
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -158,9 +159,9 @@ class Trust
 
     /**
      * Get/cache permissions for current user.
-     * *
+     * *.
      *
-     * @param  callable $callback
+     * @param callable $callback
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -186,7 +187,7 @@ class Trust
     /**
      * Delete cached permission.
      *
-     * @param  Permission $permission
+     * @param Permission $permission
      *
      * @return void
      */
@@ -198,7 +199,7 @@ class Trust
     /**
      * Delete cached role.
      *
-     * @param  Role   $role
+     * @param Role $role
      *
      * @return void
      */
@@ -210,7 +211,7 @@ class Trust
     /**
      * Delete cached roles and permmissions for the user.
      *
-     * @param  Permissible $user
+     * @param Permissible $user
      *
      * @return void
      */

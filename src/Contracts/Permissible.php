@@ -1,11 +1,13 @@
-<?php namespace Znck\Trust\Contracts;
+<?php
+
+namespace Znck\Trust\Contracts;
 
 interface Permissible
 {
     /**
      * Checks if the user has Permission.
      *
-     * @param  string|Permission $permission
+     * @param string|Permission $permission
      *
      * @return bool
      */
@@ -14,7 +16,7 @@ interface Permissible
     /**
      * Check if the user has Role.
      *
-     * @param  string|Role $role
+     * @param string|Role $role
      *
      * @return bool
      */

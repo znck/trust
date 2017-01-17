@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust;
+<?php
+
+namespace Znck\Trust;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Znck\Trust\Console\Commands\InstallPermissionsCommand;

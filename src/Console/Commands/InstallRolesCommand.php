@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Console\Commands;
+<?php
+
+namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -43,7 +45,6 @@ class InstallRolesCommand extends Command
     public function handle()
     {
         $roles = $this->file->getRequire(base_path(config('trust.permissions')));
-        ;
 
         $this->call('trust:permissions');
         $all = Permission::all(['id', 'slug']);
