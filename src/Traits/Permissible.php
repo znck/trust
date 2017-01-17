@@ -26,7 +26,7 @@ trait Permissible
      * Assign role to the user.
      *
      * @param int|string|RoleContract|Collection $roles List of roles.
-     * @param array $pivot Values for pivot columns.
+     * @param array                              $pivot Values for pivot columns.
      *
      * @return $this
      */
@@ -59,7 +59,7 @@ trait Permissible
      * Grant explicit permission to the user.
      *
      * @param int|string|PermissionContract|Collection $permissions List of permissions.
-     * @param array $pivot Values for pivot columns.
+     * @param array                                    $pivot       Values for pivot columns.
      *
      * @return $this
      */
