@@ -1,11 +1,9 @@
-<?php
-
-namespace Znck\Trust\Traits;
+<?php namespace Znck\Trust\Traits;
 
 use Illuminate\Support\Collection;
-use Znck\Trust\Contracts\Permission as PermissionContract;
 use Znck\Trust\Jobs\EvictCachedRolePermissions;
 use Znck\Trust\Observers\RoleObserver;
+use Znck\Trust\Contracts\Permission as PermissionContract;
 
 /**
  * Class RoleHasRelations.
@@ -15,13 +13,11 @@ use Znck\Trust\Observers\RoleObserver;
  */
 trait Role
 {
-    public static function bootRole()
-    {
+    public static function bootRole() {
         self::observe(RoleObserver::class);
     }
 
-    protected function collectPermissions($permission)
-    {
+    protected function collectPermissions($permission) {
         if (is_string($permission)) {
             $permission = app(PermissionContract::class)->whereSlug($permission)->first();
         }
@@ -37,21 +33,22 @@ trait Role
         } elseif ($permission instanceof PermissionContract) {
             return $permission;
         }
+
+        return null;
     }
 
     /**
      * @param string|PermissionContract|Collection|array $permission
      */
-    public function addPermission($permission)
-    {
+    public function addPermission($permission) {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->attach($permission);
             dispatch(new EvictCachedRolePermissions($this));
         }
+
     }
 
-    public function removePermission($permission)
-    {
+    public function removePermission($permission) {
         if ($permission = $this->collectPermissions($permission)) {
             $this->permissions()->detach($permission);
             dispatch(new EvictCachedRolePermissions($this));
@@ -63,8 +60,7 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions()
-    {
+    public function permissions() {
         return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
     }
 
@@ -73,8 +69,7 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
-    {
+    public function users() {
         return $this->belongsToMany(config('trust.models.user') ?? config('auth.providers.users.model'))->withTimestamps();
     }
 }

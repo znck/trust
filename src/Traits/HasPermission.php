@@ -1,6 +1,4 @@
-<?php
-
-namespace Znck\Trust\Traits;
+<?php namespace Znck\Trust\Traits;
 
 use Illuminate\Support\Collection;
 use Znck\Trust\Contracts\Permission as PermissionContract;
@@ -22,8 +20,7 @@ trait HasPermission
 
     private $permission_slugs;
 
-    public function refreshPermissions()
-    {
+    public function refreshPermissions() {
         $this->cached_roles = $this->cached_permissions = $this->permission_slugs = null;
     }
 
@@ -32,8 +29,7 @@ trait HasPermission
      *
      * @return bool
      */
-    public function assumesRoleOf($role)
-    {
+    public function assumesRoleOf($role) {
         if ($role instanceof RoleContract) {
             $role = $role->slug;
         } elseif (!is_string($role)) {
@@ -54,8 +50,7 @@ trait HasPermission
      *
      * @return bool
      */
-    public function hasPermissionTo($permission)
-    {
+    public function hasPermissionTo($permission) {
         if ($permission instanceof PermissionContract) {
             $permission = $permission->slug;
         } elseif (!is_string($permission)) {
@@ -74,8 +69,7 @@ trait HasPermission
     /**
      * @return \Illuminate\Support\Collection
      */
-    public function getPermissionNames()
-    {
+    public function getPermissionNames() {
         if (!is_null($this->permission_slugs)) {
             return $this->permission_slugs;
         }
@@ -86,8 +80,7 @@ trait HasPermission
             });
     }
 
-    public function getRoleNames()
-    {
+    public function getRoleNames() {
         if (!is_null($this->role_slugs)) {
             return $this->role_slugs;
         }
@@ -101,8 +94,7 @@ trait HasPermission
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[]
      */
-    public function getPermissions()
-    {
+    public function getPermissions() {
         if (!is_null($this->cached_permissions)) {
             return $this->cached_permissions;
         }
@@ -112,7 +104,7 @@ trait HasPermission
         /** @var \Illuminate\Support\Collection $names */
         $names = $this->getRoles()->reduce(
             function (Collection $result, RoleContract $role) {
-                /* @noinspection PhpUndefinedFieldInspection */
+                /** @noinspection PhpUndefinedFieldInspection */
                 return $result->merge($role->permissions);
             },
             $this->permissions ?? new Collection()
@@ -128,8 +120,7 @@ trait HasPermission
     /**
      * @return \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[]
      */
-    public function getRoles()
-    {
+    public function getRoles() {
         if (!is_null($this->cached_roles)) {
             return $this->cached_roles;
         }
@@ -137,7 +128,7 @@ trait HasPermission
         $this->load('roles');
 
         /** @var \Illuminate\Support\Collection $names */
-        /* @noinspection PhpUndefinedFieldInspection */
+        /** @noinspection PhpUndefinedFieldInspection */
         $names = $this->roles->pluck('slug', 'id');
 
         return $this->cached_roles = trust()->roles()->filter(
