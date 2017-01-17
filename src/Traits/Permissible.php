@@ -96,13 +96,25 @@ trait Permissible
 
         // TODO: Add support for UUID keys.
 
-        if (is_string(array_first((array) $roles)) {
+        if (is_string(array_first((array) $roles))) {
             $model = app(RoleContract::class);
 
             $roles = $model->whereIn('slug', (array) $roles)->get()->pluck($model->getKeyName())->toArray();
         }
 
         return (array) $roles;
+    }
+
+    /**
+     * Clear cached permissions.
+     *
+     * @return void
+     */
+    public function refreshPermissions()
+    {
+        trust()->clearUserCache($this);
+
+        $this->setRelations([]);
     }
 
     /**

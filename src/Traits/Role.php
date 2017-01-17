@@ -36,7 +36,7 @@ trait Role
      * @return $this
      */
     public function removePermission($permissions) {
-        $ids = $this->getPermissionIds($permissions)
+        $ids = $this->getPermissionIds($permissions);
         $this->permissions()->detach($ids);
         $this->fireModelEvent('permissionsRemoved');
 

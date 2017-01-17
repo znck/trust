@@ -1,4 +1,8 @@
-<?php namespace Znck\Trust\Observers;
+<?php
+
+namespace Znck\Trust\Observers;
+
+use Illuminate\Database\Eloquent\Model;
 
 class RoleObserver
 {

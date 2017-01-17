@@ -46,6 +46,9 @@ trait HasPermission
             return false;
         }
 
+        // print_r($permission);
+        // print_r($this->getPermissionNames());
+
         if ($this->getPermissionNames()->contains($permission)) {
             event(new PermissionUsed($this, $permission));
 
@@ -84,7 +87,7 @@ trait HasPermission
 
             return $this->roles->reduce(function ($result, $role) {
                 return $result->merge($role->permissions->keyBy('slug'));
-            }, $this->permissions->keyBy('slug');
+            }, $this->permissions->keyBy('slug'));
         });
     }
 

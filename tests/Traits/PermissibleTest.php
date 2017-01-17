@@ -15,7 +15,7 @@ class PermissibleTest extends TestCase
         $this->assertFalse($user->hasPermissionTo('create-post'));
 
         $permission = Permission::create(['name' => 'Create post', 'slug' => 'create-post']);
-        $user->permissions()->attach($permission);
+        $user->grantPermission($permission);
         $user->refreshPermissions();
         // Query permission with name (slug).
         $this->assertTrue($user->hasPermissionTo('create-post'), 'user cannot create post');
@@ -23,7 +23,7 @@ class PermissibleTest extends TestCase
         $this->assertTrue($user->hasPermissionTo($permission), 'user cannot create post (object)');
 
         // Detach Permission.
-        $user->permissions()->detach($permission);
+        $user->revokePermission($permission);
         $user->refreshPermissions();
         $this->assertCount(0, $user->getPermissions());
         $user->refreshPermissions();
@@ -40,8 +40,8 @@ class PermissibleTest extends TestCase
 
         $permission = Permission::create(['name' => 'Create post', 'slug' => 'create-post']);
         $role = Role::create(['name' => 'Author', 'slug' => 'author']);
-        $role->permissions()->attach($permission);
-        $user->roles()->attach($role);
+        $role->addPermission($permission);
+        $user->assignRole($role);
 
         $user->refreshPermissions();
 
