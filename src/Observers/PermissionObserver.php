@@ -1,16 +1,14 @@
 <?php namespace Znck\Trust\Observers;
 
+use Illuminate\Database\Eloquent\Model;
+
 class PermissionObserver
 {
-    public function created() {
-        trust()->permissions(true);
+    public function updated(Model $permission) {
+        trust()->cacheRelated($permission);
     }
 
-    public function updated() {
-        trust()->permissions(true);
-    }
-
-    public function deleted() {
-        trust()->permissions(false);
+    public function deleted(Model $permission) {
+        trust()->removeRelated($permission);
     }
 }
