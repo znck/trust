@@ -5,54 +5,75 @@ use Znck\Trust\Jobs\EvictCachedRolePermissions;
 use Znck\Trust\Observers\RoleObserver;
 use Znck\Trust\Contracts\Permission as PermissionContract;
 
-/**
- * Class RoleHasRelations.
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Permission[] permissions
- * @property-read \Illuminate\Database\Eloquent\Collection users
- */
 trait Role
 {
+    /**
+     * Add a observer.
+     */
     public static function bootRole() {
         self::observe(RoleObserver::class);
     }
 
-    protected function collectPermissions($permission) {
-        if (is_string($permission)) {
-            $permission = app(PermissionContract::class)->whereSlug($permission)->first();
-        }
+    public function addPermission($permissions) {
+        $ids = $this->getPermissionIds($permissions);
+        $this->permissions()->attach($ids);
+        $this->fireModelEvent('permissionsAdded');
 
-        if (is_array($permission) or $permission instanceof Collection) {
-            $permission = new Collection($permission);
-
-            if (is_string($permission->first())) {
-                return app(PermissionContract::class)->whereIn('slug', $permission->toArray())->get();
-            } elseif ($permission->first() instanceof PermissionContract) {
-                return $permission;
-            }
-        } elseif ($permission instanceof PermissionContract) {
-            return $permission;
-        }
-
-        return null;
+        return $this;
     }
 
     /**
-     * @param string|PermissionContract|Collection|array $permission
+     * Remove permissions from role.
+     *
+     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @return $this
      */
-    public function addPermission($permission) {
-        if ($permission = $this->collectPermissions($permission)) {
-            $this->permissions()->attach($permission);
-            dispatch(new EvictCachedRolePermissions($this));
-        }
+    public function removePermission($permissions) {
+        $ids = $this->getPermissionIds($permissions)
+        $this->permissions()->detach($ids);
+        $this->fireModelEvent('permissionsRemoved');
 
+        return $this;
     }
 
-    public function removePermission($permission) {
-        if ($permission = $this->collectPermissions($permission)) {
-            $this->permissions()->detach($permission);
-            dispatch(new EvictCachedRolePermissions($this));
+    /**
+     * Fetch permission ids from given permissions.
+     *
+     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @return array List of model keys
+     */
+    private function getPermissionIds($permissions): array {
+        if ($permissions instanceof Model) {
+            $permissions = $permissions->getKey();
         }
+
+        if ($permissions instanceof Collection) {
+            $model = app(PermissionContract::class);
+
+            $permissions = $permissions->pluck($model->getKeyName())->toArray();
+        }
+
+        // TODO: Add support for UUID keys.
+
+        if (is_string(array_first((array) $permissions))) {
+            $model = app(PermissionContract::class);
+
+            $permissions = $model->whereIn('slug', (array) $permissions)->get()->pluck($model->getKeyName())->toArray();
+        }
+
+        return (array) $permissions;
+    }
+
+    /**
+     * Add observable events.
+     *
+     * @return array
+     */
+    public function getObservableEvents() {
+        return array_merge(
+            parent::getObservableEvents(),
+            ['permissionAdded', 'permissionRemoved']
+        );
     }
 
     /**
@@ -61,7 +82,9 @@ trait Role
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function permissions() {
-        return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
+        return $this->belongsToMany(
+            config('trust.models.permission')
+        )->withTimestamps();
     }
 
     /**
@@ -70,6 +93,8 @@ trait Role
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users() {
-        return $this->belongsToMany(config('trust.models.user') ?? config('auth.providers.users.model'))->withTimestamps();
+        return $this->belongsToMany(
+            config('trust.models.user') ?? config('auth.providers.users.model')
+        )->withTimestamps();
     }
 }
