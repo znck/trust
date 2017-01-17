@@ -28,7 +28,7 @@ trait Permissible
     public function assignRole($roles) {
         $ids = $this->getRoleIds($roles);
         $this->roles()->attach($ids);
-        $this->fireModelEvent('rolesAssigned');
+        $this->fireModelEvent('rolesAdded');
 
         return $this;
     }
