@@ -1,11 +1,12 @@
-<?php namespace Znck\Trust\Jobs;
+<?php
+
+namespace Znck\Trust\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Collection;
-use Znck\Trust\Trust;
+use Znck\Trust\Contracts\Permission;
+use Znck\Trust\Contracts\Role;
 
 class EvictCachedRolePermissions implements ShouldQueue
 {
@@ -13,10 +14,11 @@ class EvictCachedRolePermissions implements ShouldQueue
     /**
      * @var \Znck\Trust\Contracts\Role
      */
-    protected $role;
+    protected $model;
 
-    public function __construct($role) {
-        $this->role = $role;
+    public function __construct($model)
+    {
+        $this->model = $model;
     }
 
     /**
@@ -24,10 +26,29 @@ class EvictCachedRolePermissions implements ShouldQueue
      *
      * @return void
      */
-    public function handle() {
-        $this->role->users()->chunk(50, function (Collection $users) {
-            $users->each(function (Model $user) {
-                cache()->forget(Trust::PERMISSION_KEY.':'.$user->getKey());
+    public function handle()
+    {
+        if ($this->model instanceof Role) {
+            $this->handleRole($this->model);
+        } elseif ($this->model instanceof Permission) {
+            $this->model->roles()->chunk(100, function ($roles) {
+                $roles->each([$this, 'handleRole']);
+            });
+        }
+    }
+
+    /**
+     * Clear cache for role.
+     *
+     * @param Role $role
+     *
+     * @return void
+     */
+    public function handleRole(Role $role)
+    {
+        $role->users()->chunk(100, function ($users) {
+            $users->each(function ($user) {
+                trust()->clearUserCache($user);
             });
         });
     }

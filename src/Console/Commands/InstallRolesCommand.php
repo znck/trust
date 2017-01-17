@@ -1,4 +1,6 @@
-<?php namespace Znck\Trust\Console\Commands;
+<?php
+
+namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -29,7 +31,8 @@ class InstallRolesCommand extends Command
      */
     private $file;
 
-    public function __construct(Filesystem $file) {
+    public function __construct(Filesystem $file)
+    {
         parent::__construct();
         $this->file = $file;
     }
@@ -39,8 +42,9 @@ class InstallRolesCommand extends Command
      *
      * @return void
      */
-    public function handle() {
-        $roles = $this->file->getRequire(base_path(config('trust.permissions')));;
+    public function handle()
+    {
+        $roles = $this->file->getRequire(base_path(config('trust.permissions')));
 
         $this->call('trust:permissions');
         $all = Permission::all(['id', 'slug']);
@@ -91,7 +95,8 @@ class InstallRolesCommand extends Command
      *
      * @return Role
      */
-    protected function findRole(string $slug) {
+    protected function findRole(string $slug)
+    {
         return Role::where('slug', $slug)->first();
     }
 }

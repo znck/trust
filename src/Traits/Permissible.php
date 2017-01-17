@@ -1,102 +1,146 @@
-<?php namespace Znck\Trust\Traits;
+<?php
 
-use Illuminate\Support\Collection;
-use \Znck\Trust\Contracts\Role as RoleContract;
-use \Znck\Trust\Contracts\Permission as PermissionContract;
+namespace Znck\Trust\Traits;
+
+use Illuminate\Database\Eloquent\Collection;
+use Znck\Trust\Contracts\Permission as PermissionContract;
+use Znck\Trust\Contracts\Role as RoleContract;
+use Znck\Trust\Observers\UserObserver;
 use Znck\Trust\Trust;
 
 trait Permissible
 {
-    use HasPermission;
+    use HasPermission, PermissionsHelper;
 
-    protected function collectRoles($role) {
-        if (is_string($role)) {
-            $role = app(RoleContract::class)->whereSlug($role)->first();
-        }
-
-        if (is_array($role) or $role instanceof Collection) {
-            $role = new Collection($role);
-
-            if (is_string($role->first())) {
-                return app(RoleContract::class)->whereIn('slug', $role->toArray())->get();
-            } elseif ($role->first() instanceof RoleContract) {
-                return $role;
-            }
-        } elseif ($role instanceof RoleContract) {
-            return $role;
-        }
-
-        return null;
-    }
-
-    protected function collectPermissions($permission) {
-        if (is_string($permission)) {
-            $permission = app(PermissionContract::class)->whereSlug($permission)->first();
-        }
-
-        if (is_array($permission) or $permission instanceof Collection) {
-            $permission = new Collection($permission);
-
-            if (is_string($permission->first())) {
-                return app(PermissionContract::class)->whereIn('slug', $permission->toArray())->get();
-            } elseif ($permission->first() instanceof PermissionContract) {
-                return $permission;
-            }
-        } elseif ($permission instanceof PermissionContract) {
-            return $permission;
-        }
-
-        return null;
+    /**
+     * Add event observer.
+     *
+     * @return void
+     */
+    public static function bootPermissible()
+    {
+        self::observe(UserObserver::class);
     }
 
     /**
-     * @param string|RoleContract|array|Collection $role
+     * Assign role to the user.
+     *
+     * @param int|string|RoleContract|Collection $roles List of roles.
+     *
+     * @return $this
      */
-    public function assignRole($role) {
-        if ($role = $this->collectRoles($role)) {
-            $this->roles()->attach($role);
+    public function assignRole($roles)
+    {
+        $ids = $this->getRoleIds($roles);
+        $this->roles()->attach($ids);
+        $this->fireModelEvent('rolesAdded');
 
-            cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
-            cache()->forget(Trust::ROLE_KEY.':'.$this->getKey());
-            $this->refreshPermissions();
-        }
+        return $this;
     }
 
     /**
-     * @param string|RoleContract|array|Collection $role
+     * Revoke role from the user.
+     *
+     * @param int|string|RoleContract|Collection $roles List of roles.
+     *
+     * @return $this
      */
-    public function revokeRole($role) {
-        if ($role = $this->collectRoles($role)) {
-            $this->roles()->detach($role);
+    public function revokeRole($roles)
+    {
+        $ids = $this->getRoleIds($roles);
+        $this->roles()->detach($ids);
+        $this->fireModelEvent('rolesRemoved');
 
-            cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
-            cache()->forget(Trust::ROLE_KEY.':'.$this->getKey());
-            $this->refreshPermissions();
-        }
+        return $this;
     }
 
     /**
-     * @param string|PermissionContract|array|Collection $permission
+     * Grant explicit permission to the user.
+     *
+     * @param int|string|PermissionContract|Collection $permissions List of permissions.
+     *
+     * @return $this
      */
-    public function givePermission($permission) {
-        if ($permission = $this->collectPermissions($permission)) {
-            $this->permissions()->attach($permission);
+    public function grantPermission($permissions)
+    {
+        $ids = $this->getPermissionIds($permissions);
+        $this->permissions()->attach($ids);
+        $this->fireModelEvent('permissionsAdded');
 
-            cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
-            $this->refreshPermissions();
-        }
+        return $this;
     }
 
     /**
-     * @param string|PermissionContract|array|Collection $permission
+     * Revoke explicit permission from the user.
+     *
+     * @param int|string|PermissionContract|Collection $permissions List of permissions.
+     *
+     * @return $this
      */
-    public function revokePermission($permission) {
-        if ($permission = $this->collectPermissions($permission)) {
-            $this->permissions()->detach($permission);
+    public function revokePermission($permissions)
+    {
+        // TODO: Add support to revoke permissions from roles.
 
-            cache()->forget(Trust::PERMISSION_KEY.':'.$this->getKey());
-            $this->refreshPermissions();
+        $ids = $this->getPermissionIds($permissions);
+        $this->permissions()->detach($ids);
+        $this->fireModelEvent('permissionsRemoved');
+
+        return $this;
+    }
+
+    /**
+     * Fetch role ids from given roles.
+     *
+     * @param int|string|Role|Collection $roles List of roles
+     *
+     * @return array List of model keys
+     */
+    protected function getRoleIds($roles): array
+    {
+        if ($roles instanceof RoleContract) {
+            $roles = $roles->getKey();
         }
+
+        if ($roles instanceof Collection) {
+            $model = app(RoleContract::class);
+
+            $roles = $roles->pluck($model->getKeyName())->toArray();
+        }
+
+        // TODO: Add support for UUID keys.
+
+        if (is_string(array_first((array) $roles))) {
+            $model = app(RoleContract::class);
+
+            $roles = $model->whereIn('slug', (array) $roles)->get()->pluck($model->getKeyName())->toArray();
+        }
+
+        return (array) $roles;
+    }
+
+    /**
+     * Clear cached permissions.
+     *
+     * @return void
+     */
+    public function refreshPermissions()
+    {
+        trust()->clearUserCache($this);
+
+        $this->setRelations([]);
+    }
+
+    /**
+     * Add observable events.
+     *
+     * @return array
+     */
+    public function getObservableEvents()
+    {
+        return array_merge(
+            parent::getObservableEvents(),
+            ['permissionAdded', 'permissionRemoved', 'rolesAdded', 'rolesRemoved']
+        );
     }
 
     /**
@@ -104,7 +148,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(config('trust.models.role'))->withTimestamps();
     }
 
@@ -113,7 +158,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions() {
+    public function permissions()
+    {
         return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
     }
 }

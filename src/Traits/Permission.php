@@ -1,16 +1,18 @@
-<?php namespace Znck\Trust\Traits;
+<?php
+
+namespace Znck\Trust\Traits;
 
 use Znck\Trust\Observers\PermissionObserver;
 
-/**
- * Class PermissionHasRelations.
- *
- * @property-read \Illuminate\Database\Eloquent\Collection|\Znck\Trust\Contracts\Role[] roles
- * @property-read \Illuminate\Database\Eloquent\Collection users
- */
 trait Permission
 {
-    public static function bootPermission() {
+    /**
+     * Add Permission Observers.
+     *
+     * @return void
+     */
+    public static function bootPermission()
+    {
         self::observe(PermissionObserver::class);
     }
 
@@ -19,8 +21,11 @@ trait Permission
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
-        return $this->belongsToMany(config('trust.models.role'))->withTimestamps();
+    public function roles()
+    {
+        return $this->belongsToMany(
+            config('trust.models.role')
+        )->withTimestamps();
     }
 
     /**
@@ -28,7 +33,20 @@ trait Permission
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() {
-        return $this->belongsToMany(config('trust.models.user') ?? config('auth.providers.users.model'))->withTimestamps();
+    public function users()
+    {
+        return $this->belongsToMany(
+            config('trust.models.user') ?? config('auth.providers.users.model')
+        )->withTimestamps();
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

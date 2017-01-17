@@ -1,16 +1,28 @@
-<?php namespace Znck\Trust\Observers;
+<?php
+
+namespace Znck\Trust\Observers;
+
+use Illuminate\Database\Eloquent\Model;
 
 class RoleObserver
 {
-    public function created() {
-        trust()->roles(true);
+    public function updated(Model $role)
+    {
+        trust()->clearRoleCache($role);
     }
 
-    public function updated() {
-        trust()->roles(true);
+    public function deleted(Model $role)
+    {
+        trust()->clearRoleCache($role);
     }
 
-    public function deleted() {
-        trust()->roles(true);
+    public function permissionsAdded(Model $role)
+    {
+        trust()->clearRoleCache($role);
+    }
+
+    public function permissionsRemoved(Model $role)
+    {
+        trust()->clearRoleCache($role);
     }
 }
