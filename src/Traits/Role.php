@@ -14,6 +14,12 @@ trait Role
         self::observe(RoleObserver::class);
     }
 
+    /**
+     * Add permissions from role.
+     *
+     * @param  int|string|Permission|Collection $permissions List of permissions
+     * @return $this
+     */
     public function addPermission($permissions) {
         $ids = $this->getPermissionIds($permissions);
         $this->permissions()->attach($ids);
