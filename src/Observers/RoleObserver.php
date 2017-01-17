@@ -6,19 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class RoleObserver
 {
-    public function updated(Model $role) {
+    public function updated(Model $role)
+    {
         trust()->clearRoleCache($role);
     }
 
-    public function deleted(Model $role) {
+    public function deleted(Model $role)
+    {
         trust()->clearRoleCache($role);
     }
 
-    public function permissionsAdded(Model $role) {
+    public function permissionsAdded(Model $role)
+    {
         trust()->clearRoleCache($role);
     }
 
-    public function permissionsRemoved(Model $role) {
+    public function permissionsRemoved(Model $role)
+    {
         trust()->clearRoleCache($role);
     }
 }

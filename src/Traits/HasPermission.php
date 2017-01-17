@@ -15,12 +15,14 @@ trait HasPermission
      * Check if the user has Role.
      *
      * @param  string $role
+     *
      * @return bool
      */
-    public function canAssumeRole($role) {
+    public function canAssumeRole($role)
+    {
         if ($role instanceof RoleContract) {
             $role = $role->slug;
-        } elseif (!is_string($role)) {
+        } elseif (! is_string($role)) {
             return false;
         }
 
@@ -37,12 +39,14 @@ trait HasPermission
      * Checks if the user has Permission.
      *
      * @param  string $permission
+     *
      * @return bool
      */
-    public function hasPermissionTo($permission) {
+    public function hasPermissionTo($permission)
+    {
         if ($permission instanceof PermissionContract) {
             $permission = $permission->slug;
-        } elseif (!is_string($permission)) {
+        } elseif (! is_string($permission)) {
             return false;
         }
 
@@ -63,7 +67,8 @@ trait HasPermission
      *
      * @return Illuminate\Support\Collection
      */
-    public function getPermissionNames() {
+    public function getPermissionNames()
+    {
         return $this->getPermissions()->keys();
     }
 
@@ -72,7 +77,8 @@ trait HasPermission
      *
      * @return Illuminate\Support\Collection
      */
-    public function getRoleNames() {
+    public function getRoleNames()
+    {
         return $this->getRoles()->keys();
     }
 
@@ -81,7 +87,8 @@ trait HasPermission
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function getPermissions() {
+    public function getPermissions()
+    {
         return trust($this)->getPermissions(function () {
             // TODO: Add support for revoking specific permissions.
 
@@ -96,7 +103,8 @@ trait HasPermission
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function getRoles() {
+    public function getRoles()
+    {
         return trust($this)->getRoles(function () {
             return $this->roles->keyBy('slug');
         });

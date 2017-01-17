@@ -9,7 +9,8 @@ trait Permission
      *
      * @return void
      */
-    public static function bootPermission() {
+    public static function bootPermission()
+    {
         self::observe(PermissionObserver::class);
     }
 
@@ -18,7 +19,8 @@ trait Permission
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(
             config('trust.models.role')
         )->withTimestamps();
@@ -29,7 +31,8 @@ trait Permission
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(
             config('trust.models.user') ?? config('auth.providers.users.model')
         )->withTimestamps();
@@ -40,7 +43,8 @@ trait Permission
      *
      * @return string
      */
-    public function getRouteKeyName() {
+    public function getRouteKeyName()
+    {
         return 'slug';
     }
 }

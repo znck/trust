@@ -11,7 +11,8 @@ trait Role
     /**
      * Add a observer.
      */
-    public static function bootRole() {
+    public static function bootRole()
+    {
         self::observe(RoleObserver::class);
     }
 
@@ -19,9 +20,11 @@ trait Role
      * Add permissions from role.
      *
      * @param  int|string|Permission|Collection $permissions List of permissions
+     *
      * @return $this
      */
-    public function addPermission($permissions) {
+    public function addPermission($permissions)
+    {
         $ids = $this->getPermissionIds($permissions);
         $this->permissions()->attach($ids);
         $this->fireModelEvent('permissionsAdded');
@@ -33,9 +36,11 @@ trait Role
      * Remove permissions from role.
      *
      * @param  int|string|Permission|Collection $permissions List of permissions
+     *
      * @return $this
      */
-    public function removePermission($permissions) {
+    public function removePermission($permissions)
+    {
         $ids = $this->getPermissionIds($permissions);
         $this->permissions()->detach($ids);
         $this->fireModelEvent('permissionsRemoved');
@@ -48,7 +53,8 @@ trait Role
      *
      * @return array
      */
-    public function getObservableEvents() {
+    public function getObservableEvents()
+    {
         return array_merge(
             parent::getObservableEvents(),
             ['permissionsAdded', 'permissionsRemoved']
@@ -60,7 +66,8 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions() {
+    public function permissions()
+    {
         return $this->belongsToMany(
             config('trust.models.permission')
         )->withTimestamps();
@@ -71,7 +78,8 @@ trait Role
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(
             config('trust.models.user') ?? config('auth.providers.users.model')
         )->withTimestamps();

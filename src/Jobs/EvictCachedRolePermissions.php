@@ -14,7 +14,8 @@ class EvictCachedRolePermissions implements ShouldQueue
      */
     protected $model;
 
-    public function __construct($model) {
+    public function __construct($model)
+    {
         $this->model = $model;
     }
 
@@ -23,10 +24,11 @@ class EvictCachedRolePermissions implements ShouldQueue
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         if ($this->model instanceof Role) {
             $this->handleRole($this->model);
-        } else if ($this->model instanceof Permission) {
+        } elseif ($this->model instanceof Permission) {
             $this->model->roles()->chunk(100, function ($roles) {
                 $roles->each([$this, 'handleRole']);
             });
@@ -37,9 +39,11 @@ class EvictCachedRolePermissions implements ShouldQueue
      * Clear cache for role.
      *
      * @param  Role $role
+     *
      * @return void
      */
-    public function handleRole(Role $role) {
+    public function handleRole(Role $role)
+    {
         $role->users()->chunk(100, function ($users) {
             $users->each(function ($user) {
                 trust()->clearUserCache($user);

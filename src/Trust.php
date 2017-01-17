@@ -19,7 +19,7 @@ class Trust
     /**
      * Determines whether to run migrations or publish them.
      *
-     * @var boolean
+     * @var bool
      */
     public static $runMigrations = true;
 
@@ -47,7 +47,7 @@ class Trust
     /**
      * Determines whether to use cache or not.
      *
-     * @var boolean
+     * @var bool
      */
     protected $caching;
 
@@ -66,7 +66,8 @@ class Trust
         $this->caching = app()->environment() === 'production';
     }
 
-    public function useCache(bool $state = true) {
+    public function useCache(bool $state = true)
+    {
         $this->caching = $state;
     }
 
@@ -90,7 +91,8 @@ class Trust
         $this->user = $user;
     }
 
-    public function getRoles($callback) {
+    public function getRoles($callback)
+    {
         $key = $this->getUser()->getKey();
 
         if (isset($this->inMemoryCache[$key])) {
@@ -108,7 +110,8 @@ class Trust
         return $this->inMemoryCache[$key]['roles'] = $this->cache->rememberForever(static::CACHE_KEY.'roles.'.$key, $callback);
     }
 
-    public function getPermissions($callback) {
+    public function getPermissions($callback)
+    {
         $key = $this->getUser()->getKey();
 
         if (isset($this->inMemoryCache[$key])) {

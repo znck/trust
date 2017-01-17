@@ -15,7 +15,8 @@ trait Permissible
      *
      * @return void
      */
-    public static function bootPermissible() {
+    public static function bootPermissible()
+    {
         self::observe(UserObserver::class);
     }
 
@@ -23,9 +24,11 @@ trait Permissible
      * Assign role to the user.
      *
      * @param  int|string|RoleContract|Collection $roles List of roles.
+     *
      * @return $this
      */
-    public function assignRole($roles) {
+    public function assignRole($roles)
+    {
         $ids = $this->getRoleIds($roles);
         $this->roles()->attach($ids);
         $this->fireModelEvent('rolesAdded');
@@ -37,9 +40,11 @@ trait Permissible
      * Revoke role from the user.
      *
      * @param  int|string|RoleContract|Collection $roles List of roles.
+     *
      * @return $this
      */
-    public function revokeRole($roles) {
+    public function revokeRole($roles)
+    {
         $ids = $this->getRoleIds($roles);
         $this->roles()->detach($ids);
         $this->fireModelEvent('rolesRemoved');
@@ -51,9 +56,11 @@ trait Permissible
      * Grant explicit permission to the user.
      *
      * @param  int|string|PermissionContract|Collection $permissions List of permissions.
+     *
      * @return $this
      */
-    public function grantPermission($permissions) {
+    public function grantPermission($permissions)
+    {
         $ids = $this->getPermissionIds($permissions);
         $this->permissions()->attach($ids);
         $this->fireModelEvent('permissionsAdded');
@@ -65,9 +72,11 @@ trait Permissible
      * Revoke explicit permission from the user.
      *
      * @param  int|string|PermissionContract|Collection $permissions List of permissions.
+     *
      * @return $this
      */
-    public function revokePermission($permissions) {
+    public function revokePermission($permissions)
+    {
         // TODO: Add support to revoke permissions from roles.
 
         $ids = $this->getPermissionIds($permissions);
@@ -81,9 +90,11 @@ trait Permissible
      * Fetch role ids from given roles.
      *
      * @param  int|string|Role|Collection $roles List of roles
+     *
      * @return array List of model keys
      */
-    protected function getRoleIds($roles): array {
+    protected function getRoleIds($roles): array
+    {
         if ($roles instanceof RoleContract) {
             $roles = $roles->getKey();
         }
@@ -122,7 +133,8 @@ trait Permissible
      *
      * @return array
      */
-    public function getObservableEvents() {
+    public function getObservableEvents()
+    {
         return array_merge(
             parent::getObservableEvents(),
             ['permissionAdded', 'permissionRemoved', 'rolesAdded', 'rolesRemoved']
@@ -134,7 +146,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function roles() {
+    public function roles()
+    {
         return $this->belongsToMany(config('trust.models.role'))->withTimestamps();
     }
 
@@ -143,7 +156,8 @@ trait Permissible
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function permissions() {
+    public function permissions()
+    {
         return $this->belongsToMany(config('trust.models.permission'))->withTimestamps();
     }
 }
