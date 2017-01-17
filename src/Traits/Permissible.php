@@ -26,13 +26,14 @@ trait Permissible
      * Assign role to the user.
      *
      * @param int|string|RoleContract|Collection $roles List of roles.
+     * @param array                              $pivot Values for pivot columns.
      *
      * @return $this
      */
-    public function assignRole($roles)
+    public function assignRole($roles, $pivot = [])
     {
         $ids = $this->getRoleIds($roles);
-        $this->roles()->attach($ids);
+        $this->roles()->attach($ids, $pivot);
         $this->fireModelEvent('rolesAdded');
 
         return $this;
@@ -58,13 +59,14 @@ trait Permissible
      * Grant explicit permission to the user.
      *
      * @param int|string|PermissionContract|Collection $permissions List of permissions.
+     * @param array                                    $pivot       Values for pivot columns.
      *
      * @return $this
      */
-    public function grantPermission($permissions)
+    public function grantPermission($permissions, $pivot = [])
     {
         $ids = $this->getPermissionIds($permissions);
-        $this->permissions()->attach($ids);
+        $this->permissions()->attach($ids, $pivot);
         $this->fireModelEvent('permissionsAdded');
 
         return $this;
