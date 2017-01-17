@@ -5,10 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 class PermissionObserver
 {
     public function updated(Model $permission) {
-        trust()->cacheRelated($permission);
+        trust()->clearPermissionCache($permission);
     }
 
     public function deleted(Model $permission) {
-        trust()->removeRelated($permission);
+        trust()->clearPermissionCache($permission);
     }
 }

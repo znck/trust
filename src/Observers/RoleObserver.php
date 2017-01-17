@@ -2,23 +2,19 @@
 
 class RoleObserver
 {
-    public function created(Model $role) {
-        trust()->cache($role);
-    }
-
     public function updated(Model $role) {
-        trust()->cache($role);
+        trust()->clearRoleCache($role);
     }
 
     public function deleted(Model $role) {
-        trust()->deleteCache($role);
+        trust()->clearRoleCache($role);
     }
 
     public function permissionsAdded(Model $role) {
-        trust()->cache($role);
+        trust()->clearRoleCache($role);
     }
 
     public function permissionsRemoved(Model $role) {
-        trust()->cache($role);
+        trust()->clearRoleCache($role);
     }
 }
