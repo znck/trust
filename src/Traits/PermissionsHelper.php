@@ -2,6 +2,9 @@
 
 namespace Znck\Trust\Traits;
 
+use Illuminate\Database\Eloquent\Collection;
+use Znck\Trust\Contracts\Permission as PermissionContract;
+
 trait PermissionsHelper {
     /**
      * Fetch permission ids from given permissions.
@@ -10,7 +13,7 @@ trait PermissionsHelper {
      * @return array List of model keys
      */
     protected function getPermissionIds($permissions): array {
-        if ($permissions instanceof Model) {
+        if ($permissions instanceof PermissionContract) {
             $permissions = $permissions->getKey();
         }
 

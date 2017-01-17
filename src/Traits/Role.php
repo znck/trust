@@ -1,9 +1,8 @@
-<?php namespace Znck\Trust\Traits;
+<?php
 
-use Illuminate\Support\Collection;
-use Znck\Trust\Jobs\EvictCachedRolePermissions;
+namespace Znck\Trust\Traits;
+
 use Znck\Trust\Observers\RoleObserver;
-use Znck\Trust\Contracts\Permission as PermissionContract;
 
 trait Role
 {
@@ -52,7 +51,7 @@ trait Role
     public function getObservableEvents() {
         return array_merge(
             parent::getObservableEvents(),
-            ['permissionAdded', 'permissionRemoved']
+            ['permissionsAdded', 'permissionsRemoved']
         );
     }
 
