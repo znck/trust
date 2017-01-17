@@ -71,7 +71,7 @@ trait HasPermission
      */
     public function getPermissionNames()
     {
-        return $this->getPermissions()->keys();
+        return $this->getPermissions()->pluck('slug');
     }
 
     /**
@@ -81,7 +81,7 @@ trait HasPermission
      */
     public function getRoleNames()
     {
-        return $this->getRoles()->keys();
+        return $this->getRoles()->pluck('slug');
     }
 
     /**
