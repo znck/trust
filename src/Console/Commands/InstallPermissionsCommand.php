@@ -4,7 +4,7 @@ namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Znck\Trust\Models\Permission;
+use Znck\Trust\Contracts\Permission;
 
 class InstallPermissionsCommand extends Command
 {
@@ -53,7 +53,7 @@ class InstallPermissionsCommand extends Command
                 }
             } else {
                 ++$create;
-                Permission::create($attributes + compact('slug'));
+                $this->create($attributes + compact('slug'));
             }
         }
         $total = $create + $update;
@@ -67,6 +67,11 @@ class InstallPermissionsCommand extends Command
      */
     protected function findPermission(string $slug)
     {
-        return Permission::where('slug', $slug)->first();
+        return app(Permission::class)->whereSlug($slug)->first();
+    }
+
+    protected function create(array $attributes)
+    {
+        return app(Permission::class)->create($attributes);
     }
 }
