@@ -7,8 +7,8 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Znck\Trust\Models\Permission;
-use Znck\Trust\Models\Role;
+use Znck\Trust\Contracts\Role;
+use Znck\Trust\Contracts\Permission;
 
 class InstallRolesCommand extends Command
 {
@@ -44,10 +44,10 @@ class InstallRolesCommand extends Command
      */
     public function handle()
     {
-        $roles = $this->file->getRequire(base_path(config('trust.permissions')));
+        $roles = $this->file->getRequire(base_path(config('trust.roles')));
 
         $this->call('trust:permissions');
-        $all = Permission::all(['id', 'slug']);
+        $all = $this->getPermissions(['id', 'slug']);
         $create = 0;
         $update = 0;
         foreach ($roles as $slug => $attributes) {
@@ -59,7 +59,7 @@ class InstallRolesCommand extends Command
                 }
             } else {
                 ++$create;
-                $role = Role::create($attributes + compact('slug'));
+                $role = $this->create($attributes + compact('slug'));
             }
 
             $permissions = array_reduce(
@@ -90,13 +90,18 @@ class InstallRolesCommand extends Command
         $this->line("Installed ${total} roles. <info>(${create} new roles, ${update} roles synced)</info>");
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return Role
-     */
+    protected function getPermissions()
+    {
+        return app(Permission::class)->all();
+    }
+
     protected function findRole(string $slug)
     {
-        return Role::where('slug', $slug)->first();
+        return app(Role::class)->whereSlug($slug)->first();
+    }
+
+    protected function create(array $attributes)
+    {
+        return app(Role::class)->create($attributes);
     }
 }
