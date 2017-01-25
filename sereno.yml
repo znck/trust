@@ -1,0 +1,25 @@
+siteName: Trust
+siteDescription: trust ({ who? }) -> to ({ what the heck! })  |   User roles and permissions for Laravel
+docs_edit_url: https://github.com/znck/trust/edit/master/docs
+docs_repo: https://github.com/znck/trust
+docs_issues: https://github.com/znck/trust/issues
+
+sereno:
+    url: http://znck.me/trust
+    public: .github/sereno/public
+    extensions:
+      - Sereno\Extensions\DocsExtension
+    directory:
+      - .github/sereno/content
+    views:
+      - .github/sereno/resources/views/
+    ignore:
+      - docs/README.md
+
+docs:
+    directory: docs
+    url_prefix: /
+    index: index
+    extends: docs.base
+    yields: doc_content
+    default: introduction

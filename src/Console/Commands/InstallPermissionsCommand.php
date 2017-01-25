@@ -3,7 +3,7 @@
 namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Container\Container;
 use Znck\Trust\Contracts\Permission;
 
 class InstallPermissionsCommand extends Command
@@ -23,14 +23,17 @@ class InstallPermissionsCommand extends Command
     protected $description = 'Install permissions.';
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
+     * Laravel Container (IoC Binder).
+     *
+     * @var \Illuminate\Container\Container
      */
-    private $file;
+    protected $app;
 
-    public function __construct(Filesystem $file)
+    public function __construct(Container $app)
     {
         parent::__construct();
-        $this->file = $file;
+
+        $this->app = $app;
     }
 
     /**
@@ -40,22 +43,24 @@ class InstallPermissionsCommand extends Command
      */
     public function handle()
     {
-        $permissions = $this->file->getRequire(base_path(config('trust.permissions')));
+        $permissions = $this->app->make('trust.permissions');
 
-        $create = 0;
-        $update = 0;
-        foreach ($permissions as $slug => $attributes) {
-            $permission = $this->findPermission($slug);
-            if ($permission) {
-                if ($this->option('force')) {
-                    ++$update;
-                    $permission->update($attributes + compact('slug'));
-                }
-            } else {
+        $create = $update = 0;
+
+        collect($permissions)->each(function ($attributes) use (&$create, &$update) {
+            $permission = $this->findPermission($attributes['slug']);
+
+            if (!$permission) {
+                $this->create((array) $attributes);
+
                 ++$create;
-                $this->create($attributes + compact('slug'));
+            } elseif ($this->option('force')) {
+                $permission->update((array) $attributes);
+
+                ++$update;
             }
-        }
+        });
+
         $total = $create + $update;
         $this->line("Installed ${total} permissions. <info>(${create} new permissions)</info>");
     }
@@ -67,11 +72,11 @@ class InstallPermissionsCommand extends Command
      */
     protected function findPermission(string $slug)
     {
-        return app(Permission::class)->whereSlug($slug)->first();
+        return $this->app->make(Permission::class)->whereSlug($slug)->first();
     }
 
     protected function create(array $attributes)
     {
-        return app(Permission::class)->create($attributes);
+        return $this->app->make(Permission::class)->create($attributes);
     }
 }
