@@ -1,5 +1,5 @@
 <div align="center" style="padding: 40px 0;">
-  <img src="http://znck.me/attach/img/trust-logo.png" height="144" />
+  <img src="http://znck.me/trust/img/trust-logo.png" height="144" />
 </div>
 
 Introduction
