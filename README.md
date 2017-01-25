@@ -9,7 +9,7 @@ automatic caching and fine control over your ACL.
 
 Supercharge Laravel's ACL with trust.
 
-> See [docs](http://znck.me/trust) for installing, using and contributing.
+> See [docs](http://znck.me/trust/installation) for installing, using and contributing.
 
 
 <p align="center">
@@ -29,7 +29,7 @@ Supercharge Laravel's ACL with trust.
     <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"/>
   </a>
   <a href="https://packagist.org/packages/znck/trust">
-    <img src="https://img.shields.io/packagist/v/znck/trust.svg?style=flat-square"/>
+    <img src="https://img.shields.io/packagist/dt/znck/trust.svg?style=flat-square"/>
   </a>
   <a href="https://github.com/znck/trust/releases">
     <img src="https://img.shields.io/github/release/znck/trust.svg?style=flat-square"/>
