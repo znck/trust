@@ -3,13 +3,11 @@
 namespace Znck\Trust\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Arr;
+use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Container\Container;
-use Znck\Trust\Contracts\Role;
 use Znck\Trust\Contracts\Permission;
+use Znck\Trust\Contracts\Role;
 
 class InstallRolesCommand extends Command
 {
@@ -28,7 +26,7 @@ class InstallRolesCommand extends Command
     protected $description = 'Install roles.';
 
     /**
-     * Laravel Container (IoC Binder)
+     * Laravel Container (IoC Binder).
      *
      * @var \Illuminate\Container\Container
      */
