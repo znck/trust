@@ -17,9 +17,6 @@ sereno:
       - docs/README.md
 
 docs:
-    directory: docs
     url_prefix: /
     index: index
-    extends: docs.base
-    yields: doc_content
     default: introduction
