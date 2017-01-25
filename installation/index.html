@@ -159,55 +159,23 @@
             	</section>
 
             	<article class="col-xs-12 col-lg-9">
-            		<div align="center" style="padding: 40px 0;">
-  <img src="http://znck.me/trust/img/trust-logo.png" height="144" />
-</div>
-<h2>Introduction</h2>
-<p>Trust provides an elegant way to add role based permissions to Laravel. With trust you get fluent &amp; expressive API,
-automatic caching and fine control over your ACL.</p>
-<p>Supercharge Laravel’s ACL with trust.</p>
+            		<h1>Installation</h1>
+<p>Use <a target="\_blank" href="https://getcomposer.com">Composer</a> to install <strong>trust</strong>.</p>
+<pre><code class="language-bash"><span class="line">composer require znck/trust</span></code></pre>
+<p>Next, your need to register the service provider,</p>
+<pre><code class="language-php"><span class="line"><span class="hljs-comment">// config/app.php</span></span>
+<span class="line"></span>
+<span class="line"><span class="hljs-string">'providers'</span> =&gt; [</span>
+<span class="line">  ...</span>
+<span class="line">  Znck\Trust\TrustServiceProvider::class,</span>
+<span class="line">],</span></code></pre>
+<p>Run the migrations,</p>
+<pre><code class="language-bash"><span class="line">php artisan migrate</span></code></pre>
 <blockquote>
-<p>See <a href="http://znck.me/trust/installation">docs</a> for installing, using and contributing.</p>
+<p>TODO: Add docs for publishing migrations</p>
 </blockquote>
-<p align="center">
-  <a href="https://styleci.io/repos/32819436">
-    <img src="https://styleci.io/repos/32819436/shield"/>
-  </a>
-  <a href="https://circleci.com/gh/znck/trust">
-    <img src="https://circleci.com/gh/znck/trust.svg?style=svg"/>
-  </a>
-  <a href="https://coveralls.io/github/znck/trust?branch=master">
-    <img src="https://coveralls.io/repos/github/znck/trust/badge.svg?branch=master&style=flat-square"/>
-  </a>
-  <a href="https://www.codacy.com/app/znck/trust">
-    <img src="https://api.codacy.com/project/badge/grade/9264639675f04aed934032372d433c7a"/>
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"/>
-  </a>
-  <a href="https://packagist.org/packages/znck/trust">
-    <img src="https://img.shields.io/packagist/dt/znck/trust.svg?style=flat-square"/>
-  </a>
-  <a href="https://github.com/znck/trust/releases">
-    <img src="https://img.shields.io/github/release/znck/trust.svg?style=flat-square"/>
-  </a>
-  <a href="https://github.com/znck/trust/issues">
-    <img src="https://img.shields.io/github/issues/znck/trust.svg?style=flat-square"/>
-  </a>
-</p>
-<h2>Security</h2>
-<p>If you discover any security related issues, please email hi@znck.me instead of using the issue tracker.</p>
-<h2>Credits</h2>
-<ul>
-<li>
-<a href="https://github.com/znck">Rahul Kadyan</a>
-</li>
-<li>
-<a href="https://github.com/znck/trust/graphs/contributors">All Contributors</a>
-</li>
-</ul>
-<h2>License</h2>
-<p>The MIT License (MIT). Please see <a href="LICENSE">License File</a> for more information.</p>
+<hr />
+<p><a href="https://github.com/znck/trust/edit/master/docs/installation.md">Edit this page on Github</a></p>
             	</article>
 
                 <footer class="col-xs-12 hidden-lg-up">
