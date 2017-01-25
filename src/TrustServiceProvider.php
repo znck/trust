@@ -2,13 +2,12 @@
 
 namespace Znck\Trust;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Znck\Trust\Console\Commands\InstallPermissionsCommand;
 use Znck\Trust\Console\Commands\InstallRolesCommand;
 use Znck\Trust\Contracts\Permission;
 use Znck\Trust\Contracts\Role;
-use Illuminate\Filesystem\Filesystem;
-
 use Znck\Trust\Services\PermissionFinder;
 
 /**
@@ -144,7 +143,7 @@ class TrustServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Laravel Local Filesystem
+     * Laravel Local Filesystem.
      *
      * @return \Illuminate\Filesystem\Filesystem
      */
@@ -152,6 +151,7 @@ class TrustServiceProvider extends BaseServiceProvider
     {
         return $this->app->make(Filesystem::class);
     }
+
     /**
      * Register Trust instance.
      */
@@ -159,6 +159,7 @@ class TrustServiceProvider extends BaseServiceProvider
     {
         $this->app->singleton(Trust::class);
     }
+
     /**
      * Load configurations.
      */
@@ -166,6 +167,7 @@ class TrustServiceProvider extends BaseServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/trust.php', 'trust');
     }
+
     /**
      * Bind Role & Permission interface to concrete types.
      */
