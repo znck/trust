@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="trust ({ who? }) -> to ({ what the heck! })  |   User roles and permissions for Laravel">
+
+    <title> Trust - Rahul Kadyan</title>
+
+    <link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/assets/icons/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/assets/icons/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/icons/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="manifest" href="/assets/icons/manifest.json">
+    <meta name="msapplication-TileColor" content="#ff574a">
+    <meta name="msapplication-TileImage" content="/assets/icons/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ff574a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <link rel="stylesheet" href="http://znck.me/assets/css/app.css">
+</head>
+
+<body>
+<nav class="navbar navbar-light border-bottom">
+    <div class="container">
+        <a class="navbar-brand" href="http://znck.me/trust/" style="margin-right: 0">
+            Trust
+        </a>
+        <a class="navbar-brand" href="http://znck.me/">
+            <span style="color: rgba(0, 0, 0, 0.25);">&nbsp;| Rahul Kadyan</span>
+        </a>
+        <div>
+            <div class="clearfix hidden-lg-up">
+                <a role="button" class="navbar-toggler float-xs-right" data-toggle="collapse"
+                   data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                   aria-label="Toggle navigation"></a>
+            </div>
+            <div class="collapse navbar-toggleable-md" id="navbarResponsive">
+                <ul class="nav navbar-nav float-lg-right">
+                    <li class="nav-item">
+    <a class="nav-link" href="http://znck.me/">Home</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="http://znck.me/blog">Blog</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="http://sereno.in/projects">Projects</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="https://github.com/znck" target="_blank">Github</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="http://znck.me/about">About</a>
+</li>
+                </ul>
+                            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="body" style="min-height: 70vh">
+        <div class="container py-2">
+        <div class="row">
+            <div class="col-xs-12 col-lg-8 offset-lg-2">
+                <div align="center" style="padding: 40px 0;">
+  <img src="http://znck.me/attach/img/trust-logo.png" height="144" />
+</div>
+<h2>Introduction</h2>
+<p>Trust provides an elegant way to add role based permissions to Laravel. With trust you get fluent &amp; expressive API,
+automatic caching and fine control over your ACL.</p>
+<p>Supercharge Laravel’s ACL with trust.</p>
+<p align="center">
+  <a href="https://styleci.io/repos/32819436">
+    <img src="https://styleci.io/repos/32819436/shield" alt="StyleCI Status" />
+  </a>
+  <a href="https://circleci.com/gh/znck/trust">
+    <img src="https://circleci.com/gh/znck/trust.svg?style=svg" alt="Build Status" />
+  </a>
+  <a href="https://coveralls.io/github/znck/trust?branch=master">
+    <img src="https://coveralls.io/repos/github/znck/trust/badge.svg?branch=master&style=flat-square" alt="Coverage Status" />
+  </a>
+  <a href="https://www.codacy.com/app/znck/trust">
+    <img src="https://api.codacy.com/project/badge/grade/9264639675f04aed934032372d433c7a"/>
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License" />
+  </a>
+  <a href="https://packagist.org/packages/znck/trust">
+    <img src="https://img.shields.io/packagist/v/znck/trust.svg?style=flat-square" alt="Packagist" />
+  </a>
+  <a href="https://github.com/znck/trust/releases">
+    <img src="https://img.shields.io/github/release/znck/trust.svg?style=flat-square" alt="Latest Version" />
+  </a>
+  <a href="https://github.com/znck/trust/issues">
+    <img src="https://img.shields.io/github/issues/znck/trust.svg?style=flat-square" alt="Issues" />
+  </a>
+</p>
+<h2>Security</h2>
+<p>If you discover any security related issues, please email hi@znck.me instead of using the issue tracker.</p>
+<h2>Credits</h2>
+<ul>
+<li>
+<a href="https://github.com/znck">Rahul Kadyan</a>
+</li>
+<li>
+<a href="https://github.com/znck/trust/graphs/contributors">All Contributors</a>
+</li>
+</ul>
+<h2>License</h2>
+<p>The MIT License (MIT). Please see <a href="LICENSE">License File</a> for more information.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+<script src="http://znck.me/assets/js/app.js" type="text/javascript"></script>
+</body>
+</html>
