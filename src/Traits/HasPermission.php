@@ -24,7 +24,7 @@ trait HasPermission
     {
         if ($role instanceof RoleContract) {
             $role = $role->slug;
-        } elseif (! is_string($role)) {
+        } elseif (!is_string($role)) {
             return false;
         }
 
@@ -48,7 +48,7 @@ trait HasPermission
     {
         if ($permission instanceof PermissionContract) {
             $permission = $permission->slug;
-        } elseif (! is_string($permission)) {
+        } elseif (!is_string($permission)) {
             return false;
         }
 

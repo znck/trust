@@ -17,22 +17,22 @@ class PermissionFinderTest extends TestCase
             'foo' => [
                 'slug' => 'foo',
                 'name' => 'Foo',
-            ]
+            ],
         ], $finder->toArray());
     }
 
     public function test_it_finds_permissions_for_string_with_extras()
     {
         $finder = new PermissionFinder('foo', [
-            'name' => 'Foo Permission', 'Ignore Me', 'description' => 'Foo Description'
+            'name' => 'Foo Permission', 'Ignore Me', 'description' => 'Foo Description',
         ]);
 
         $this->assertEquals([
             'foo' => [
-                'slug' => 'foo',
-                'name' => 'Foo Permission',
+                'slug'        => 'foo',
+                'name'        => 'Foo Permission',
                 'description' => 'Foo Description',
-            ]
+            ],
         ], $finder->toArray());
 
         $this->assertEquals([
@@ -67,7 +67,7 @@ class PermissionFinderTest extends TestCase
             'foo' => [
                 'slug' => 'foo',
                 'name' => 'Foo',
-            ]
+            ],
         ], $finder->toArray());
     }
 
@@ -75,22 +75,22 @@ class PermissionFinderTest extends TestCase
     {
         $finder = new PermissionFinder([
             'foo' => [
-                'name' => 'Foo Permission', 'Ignore Me', 'description' => 'Foo Description'
+                'name' => 'Foo Permission', 'Ignore Me', 'description' => 'Foo Description',
             ],
             ['slug' => 'BAR'],
             ['name' => 'Baz Perm'],
-            'YAK'
+            'YAK',
         ]);
 
         $this->assertEquals([
             'foo' => [
-                'slug' => 'foo',
-                'name' => 'Foo Permission',
+                'slug'        => 'foo',
+                'name'        => 'Foo Permission',
                 'description' => 'Foo Description',
             ],
             'BAR' => [
                 'slug' => 'BAR',
-                'name' => 'BAR'
+                'name' => 'BAR',
             ],
             'baz_perm' => [
                 'slug' => 'baz_perm',
@@ -99,7 +99,7 @@ class PermissionFinderTest extends TestCase
             'yak' => [
                 'name' => 'YAK',
                 'slug' => 'yak',
-            ]
+            ],
         ], $finder->toArray());
     }
 
@@ -108,10 +108,10 @@ class PermissionFinderTest extends TestCase
         $finder = new PermissionFinder(User::class, ['members']);
 
         $this->assertEquals([
-            'user.create' => ['name' => 'Create User', 'slug' => 'user.create'],
-            'user.read' => ['name' => 'Read User', 'slug' => 'user.read'],
-            'user.update' => ['name' => 'Update User', 'slug' => 'user.update'],
-            'user.delete' => ['name' => 'Delete User', 'slug' => 'user.delete'],
+            'user.create'  => ['name' => 'Create User', 'slug' => 'user.create'],
+            'user.read'    => ['name' => 'Read User', 'slug' => 'user.read'],
+            'user.update'  => ['name' => 'Update User', 'slug' => 'user.update'],
+            'user.delete'  => ['name' => 'Delete User', 'slug' => 'user.delete'],
             'user.members' => ['name' => 'Members User', 'slug' => 'user.members'],
         ], $finder->toArray());
     }

@@ -23,7 +23,7 @@ class InstallPermissionsCommand extends Command
     protected $description = 'Install permissions.';
 
     /**
-     * Laravel Container (IoC Binder)
+     * Laravel Container (IoC Binder).
      *
      * @var \Illuminate\Container\Container
      */
@@ -50,7 +50,7 @@ class InstallPermissionsCommand extends Command
         collect($permissions)->each(function ($attributes) use (&$create, &$update) {
             $permission = $this->findPermission($attributes['slug']);
 
-            if (! $permission) {
+            if (!$permission) {
                 $this->create((array) $attributes);
 
                 ++$create;

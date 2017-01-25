@@ -2,16 +2,15 @@
 
 namespace Znck\Trust\Services;
 
-use InvalidArgumentException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 /**
  * Create permission from model class or array or string.
  */
 class PermissionFinder implements Arrayable
 {
-
     /**
      * List of permissions.
      *
@@ -46,8 +45,9 @@ class PermissionFinder implements Arrayable
     /**
      * Create permissions from class.
      *
-     * @param  string $class  Fully qualified class Name
-     * @param  array $extras  Extra actions required.
+     * @param string $class  Fully qualified class Name
+     * @param array  $extras Extra actions required.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getPermissionsFromClass(string $class, array $extras = [])
@@ -67,14 +67,16 @@ class PermissionFinder implements Arrayable
 
             return $this->preparePermission(
                 $prefix.'.'.$action,
-                ['name' => ucwords($extras['name'] ?? $extras[0] ?? $action).' '.$name ] + $extras
+                ['name' => ucwords($extras['name'] ?? $extras[0] ?? $action).' '.$name] + $extras
             );
         });
     }
 
     /**
      * Form permissions from array.
-     * @param  array  $source List of permissions.
+     *
+     * @param array $source List of permissions.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getPermissionsFromArray(array $source)
@@ -91,8 +93,9 @@ class PermissionFinder implements Arrayable
     /**
      * Fix permission format.
      *
-     * @param  string|int $slug   Permission slug
-     * @param  array $extras Extra attributes.
+     * @param string|int $slug   Permission slug
+     * @param array      $extras Extra attributes.
+     *
      * @return array
      */
     public function preparePermission($slug, array $extras = [])
