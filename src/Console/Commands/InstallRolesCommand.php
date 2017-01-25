@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Container\Container;
 use Znck\Trust\Contracts\Role;
 use Znck\Trust\Contracts\Permission;
 
@@ -27,14 +28,17 @@ class InstallRolesCommand extends Command
     protected $description = 'Install roles.';
 
     /**
-     * @var \Illuminate\Filesystem\Filesystem
+     * Laravel Container (IoC Binder)
+     *
+     * @var \Illuminate\Container\Container
      */
-    private $file;
+    protected $app;
 
-    public function __construct(Filesystem $file)
+    public function __construct(Container $app)
     {
         parent::__construct();
-        $this->file = $file;
+
+        $this->app = $app;
     }
 
     /**
@@ -44,64 +48,84 @@ class InstallRolesCommand extends Command
      */
     public function handle()
     {
-        $roles = $this->file->getRequire(base_path(config('trust.roles')));
-
+        // Install Permissions First.
         $this->call('trust:permissions');
-        $all = $this->getPermissions(['id', 'slug']);
-        $create = 0;
-        $update = 0;
-        foreach ($roles as $slug => $attributes) {
-            $role = $this->findRole($slug);
-            if ($role) {
-                if ($this->option('force')) {
-                    ++$update;
-                    $role->update($attributes + compact('slug'));
-                }
-            } else {
+
+        $roles = $this->app->make('trust.roles');
+
+        $permissions = $this->getPermissions(['id', 'slug']);
+
+        $create = $update = 0;
+
+        collect($roles)->each(function ($attributes) use ($permissions, &$create, &$update) {
+            $role = $this->findRole($attributes['slug']);
+
+            if (!$role) {
+                $role = $this->create((array) $attributes);
+
                 ++$create;
-                $role = $this->create($attributes + compact('slug'));
+            } elseif ($this->option('force')) {
+                $role->update((array) $attributes);
+
+                ++$update;
+            } else {
+                return;
             }
 
-            $permissions = array_reduce(
-                Arr::get($attributes, 'permissions', []),
-                function (Collection $result, string $name) use ($all) {
-                    if (hash_equals('*', $name)) {
-                        return $all->pluck('id');
+            $role->permissions()->sync(
+                collect($attributes['permissions'] ?? [])->sort(function (string $a, string $b) {
+                    if ($a[0] === $b[0]) {
+                        return 0;
                     }
 
-                    if ($all->count() === $result->count()) {
-                        return $result;
+                    return $b[0] === '!' ? -1 : 1;
+                })->reduce(function (Collection $ids, string $slug) use ($permissions) {
+                    if (hash_equals('*', $slug)) {
+                        return $permissions->pluck('id');
                     }
 
-                    $filtered = $all->filter(
-                        function (Permission $permission) use ($name) {
-                            return Str::is($name, $permission->slug);
-                        }
-                    )->pluck('id');
+                    if (count($permissions) === count($ids)) {
+                        return $ids;
+                    }
 
-                    return $result->merge($filtered);
-                },
-                new Collection()
+                    if ($negate = ($slug[0] === '!')) {
+                        $slug = substr($slug, 1);
+                    }
+
+                    $matched = $permissions->filter(function ($permission) use ($slug) {
+                        return Str::is($slug, $permission->slug);
+                    });
+
+                    if ($negate === true) {
+                        $matched = $matched->keyBy('slug');
+
+                        return $ids->filter(function ($id) use ($matched) {
+                            return !$matched->has($id->slug);
+                        });
+                    }
+
+                    return $ids->merge($matched)->unique();
+                }, collect())->pluck('id')
             );
+        });
 
-            $role->permissions()->sync($permissions->toArray());
-        }
         $total = $create + $update;
+
         $this->line("Installed ${total} roles. <info>(${create} new roles, ${update} roles synced)</info>");
     }
 
-    protected function getPermissions()
+    protected function getPermissions(array $columns)
     {
-        return app(Permission::class)->all();
+        return $this->app->make(Permission::class)->all($columns);
     }
 
     protected function findRole(string $slug)
     {
-        return app(Role::class)->whereSlug($slug)->first();
+        return $this->app->make(Role::class)->whereSlug($slug)->first();
     }
 
     protected function create(array $attributes)
     {
-        return app(Role::class)->create($attributes);
+        return $this->app->make(Role::class)->create($attributes);
     }
 }

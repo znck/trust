@@ -43,14 +43,14 @@ class Trust
     /**
      * Laravel bus dispatcher.
      *
-     * @var Illuminate\Contracts\Bus\Dispatcher
+     * @var \Illuminate\Contracts\Bus\Dispatcher
      */
     protected $dispatcher;
 
     /**
      * Laravel auth guard.
      *
-     * @var Illuminate\Contracts\Auth\Guard
+     * @var \Illuminate\Contracts\Auth\Guard
      */
     protected $guard;
 
@@ -99,14 +99,29 @@ class Trust
         return $this->getUser()->hasPermissionTo($permission);
     }
 
+    public function can($permission)
+    {
+        return $this->getUser()->hasPermissionTo($permission);
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->getUser()->hasPermissionTo($permission);
+    }
+
     /**
-     * Chech user has role.
+     * Check user has role.
      *
      * @param string $role Role name (slug)
      *
      * @return bool
      */
     public function is($role)
+    {
+        return $this->getUser()->canAssumeRole($role);
+    }
+
+    public function hasRole($role)
     {
         return $this->getUser()->canAssumeRole($role);
     }
@@ -136,7 +151,7 @@ class Trust
      *
      * @param callable $callback
      *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getRoles($callback)
     {
@@ -163,7 +178,7 @@ class Trust
      *
      * @param callable $callback
      *
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getPermissions($callback)
     {
