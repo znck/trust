@@ -79,7 +79,7 @@ class InstallRolesCommand extends Command
                     return $b[0] === '!' ? -1 : 1;
                 })->reduce(function (Collection $ids, string $slug) use ($permissions) {
                     if (hash_equals('*', $slug)) {
-                        return $permissions->pluck('id');
+                        return $permissions;
                     }
 
                     if (count($permissions) === count($ids)) {

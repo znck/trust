@@ -9,32 +9,34 @@ automatic caching and fine control over your ACL.
 
 Supercharge Laravel's ACL with trust.
 
+> See [docs](http://znck.me/trust/installation) for installing, using and contributing.
+
 
 <p align="center">
   <a href="https://styleci.io/repos/32819436">
-    <img src="https://styleci.io/repos/32819436/shield" alt="StyleCI Status" />
+    <img src="https://styleci.io/repos/32819436/shield"/>
   </a>
   <a href="https://circleci.com/gh/znck/trust">
-    <img src="https://circleci.com/gh/znck/trust.svg?style=svg" alt="Build Status" />
+    <img src="https://circleci.com/gh/znck/trust.svg?style=svg"/>
   </a>
   <a href="https://coveralls.io/github/znck/trust?branch=master">
-    <img src="https://coveralls.io/repos/github/znck/trust/badge.svg?branch=master&style=flat-square" alt="Coverage Status" />
+    <img src="https://coveralls.io/repos/github/znck/trust/badge.svg?branch=master&style=flat-square"/>
   </a>
   <a href="https://www.codacy.com/app/znck/trust">
     <img src="https://api.codacy.com/project/badge/grade/9264639675f04aed934032372d433c7a"/>
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Software License" />
+    <img src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"/>
   </a>
   <a href="https://packagist.org/packages/znck/trust">
-    <img src="https://img.shields.io/packagist/v/znck/trust.svg?style=flat-square" alt="Packagist" />
+    <img src="https://img.shields.io/packagist/dt/znck/trust.svg?style=flat-square"/>
   </a>
   <a href="https://github.com/znck/trust/releases">
-    <img src="https://img.shields.io/github/release/znck/trust.svg?style=flat-square" alt="Latest Version" />
+    <img src="https://img.shields.io/github/release/znck/trust.svg?style=flat-square"/>
   </a>
 
   <a href="https://github.com/znck/trust/issues">
-    <img src="https://img.shields.io/github/issues/znck/trust.svg?style=flat-square" alt="Issues" />
+    <img src="https://img.shields.io/github/issues/znck/trust.svg?style=flat-square"/>
   </a>
 </p>
 

@@ -4,6 +4,9 @@ docs_edit_url: https://github.com/znck/trust/edit/master/docs
 docs_repo: https://github.com/znck/trust
 docs_issues: https://github.com/znck/trust/issues
 
+github:
+  branch: gh-pages
+
 sereno:
     url: http://znck.me/trust
     public: .github/sereno/public
@@ -17,9 +20,6 @@ sereno:
       - docs/README.md
 
 docs:
-    directory: docs
     url_prefix: /
     index: index
-    extends: docs.base
-    yields: doc_content
     default: introduction
