@@ -11,4 +11,5 @@ class Role extends Model implements RoleContract
     use RoleTrait;
 
     protected $fillable = ['name', 'slug', 'description'];
+
 }
