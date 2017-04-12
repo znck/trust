@@ -27,7 +27,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <link rel="stylesheet" href="http://znck.me/assets/css/app.css">
+    <link rel="stylesheet" href="//znck.me/assets/css/app.css">
 </head>
 
 <body>
@@ -61,6 +61,6 @@
 
 <div class="clearfix"></div>
 
-<script src="http://znck.me/assets/js/app.js" type="text/javascript"></script>
+<script src="//znck.me/assets/js/app.js" type="text/javascript"></script>
 </body>
 </html>
